@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Easy Cash - Ana Sayfa</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" th:href="@{/web/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/web/css/style.css}" type="text/css" media="all" />
+    <link rel="stylesheet" th:href="@{/web/css/slider.css}" type="text/css" media="all" />
+    <link th:href="@{/web/css/font-awesome.css}" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800" rel="stylesheet">
+</head>
+<body>
+    <div class="main-w3-pvt-header-sec" id="home">
+        <header>
+            <div class="container">
+                <div class="header d-lg-flex justify-content-between align-items-center py-lg-3 px-lg-3">
+                    <div id="logo">
+                        <h1><a href="#"><span class="fa fa-recycle mr-2"></span>EasyCash</a></h1>
+                    </div>
+                    <div class="w3pvt-bg">
+                        <div class="nav_w3pvt">
+                            <nav>
+                                <label for="drop" class="toggle">Menü</label>
+                                <input type="checkbox" id="drop" />
+                                <ul class="menu">
+                                    <li class="active"><a th:href="@{/}">Ana Sayfa</a></li>
+                                    <li><a href="#">Hakkımızda</a></li>
+                                    <li><a href="#">Hizmetlerimiz</a></li>
+                                    <li><a th:href="@{/contact}">İletişim</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="justify-content-center">
+                            <div class="apply-w3-pvt ml-lg-3">
+                                <a class="btn read" th:href="@{/login}" role="button">Giriş Yap</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="banner_w3pvt">
+            <div class="csslider infinity" id="slider1">
+                <input type="radio" name="slides" checked="checked" id="slides_1" />
+                <input type="radio" name="slides" id="slides_2" />
+                <input type="radio" name="slides" id="slides_3" />
+                <ul>
+                    <li>
+                        <div class="banner-top">
+                            <div class="overlay">
+                                <div class="container">
+                                    <div class="banner-info">
+                                        <div class="banner-w3ls-inner">
+                                            <h4>Geleceğinize Yatırım Yapın</h4>
+                                            <h3>Bireysel Krediler</h3>
+                                            <p>Integer sit amet mattis quam, sit amet ultricies velit. Praesent ullamcorper dui turpis.</p>
+                                            <div class="test-info text-left mt-lg-5 mt-4">
+                                                <a href="#" class="btn mr-2">Daha Fazlası</a>
+                                                <a th:href="@{/contact}" class="btn">İletişim</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="banner-top1">
+                            <div class="overlay sec">
+                                <div class="container">
+                                    <div class="banner-info">
+                                        <div class="banner-w3ls-inner">
+                                            <h4>Hayalinizi Destekliyoruz</h4>
+                                            <h3>Konut Kredileri</h3>
+                                            <p>Integer sit amet mattis quam, sit amet ultricies velit. Praesent ullamcorper dui turpis.</p>
+                                            <div class="test-info text-left mt-lg-5 mt-4">
+                                                <a href="#" class="btn mr-2">Daha Fazlası</a>
+                                                <a th:href="@{/contact}" class="btn">İletişim</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="arrows">
+                    <label for="slides_1"></label>
+                    <label for="slides_2"></label>
+                    <label for="slides_3"></label>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <section class="banner-bottom py-5" id="process">
+        <div class="container py-md-5">
+            <div class="row bottom-grids text-center">
+                <div class="col-md-4 bottom-grid">
+                    <span class="fa clr1 fa-star-half-o"></span>
+                    <p class="number">1</p>
+                    <h4>Check Your Rate</h4>
+                    <p class="mt-4">Donec malesuada ex sit amet pretium sid ornare. Nulla congue scelerisque tellus, utpretium nulla malesuada sedint. Suspendisse venenatis</p>
+                </div>
+                <div class="col-md-4 mt-md-0 mt-5 bottom-grid">
+                    <span class="fa clr2 fa fa-money"></span>
+                    <p class="number">2</p>
+                    <h4>Choose Your Loan</h4>
+                    <p class="mt-4">Donec malesuada ex sit amet pretium sid ornare. Nulla congue scelerisque tellus, utpretium nulla malesuada sedint. Suspendisse venenatis</p>
+                </div>
+                <div class="col-md-4 mt-md-0 mt-5 bottom-grid">
+                    <span class="fa clr3 fa-credit-card"></span>
+                    <p class="number">3</p>
+                    <h4>Get Your Funds</h4>
+                    <p class="mt-4">Donec malesuada ex sit amet pretium sid ornare. Nulla congue scelerisque tellus, utpretium nulla malesuada sedint. Suspendisse venenatis</p>
+                </div>
+                <span class="border-line"></span>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer-content py-5">
+        <div class="container py-md-3">
+            <div class="footer-top text-center">
+                <h2>
+                    <a class="navbar-brand pt-3 mb-5" href="#">
+                        <span class="fa fa-recycle"></span> EasyCash
+                    </a>
+                </h2>
+            </div>
+            <div class="row footer-top-inner-w3-pvt text-center">
+                <div class="col-lg-12">
+                    <p>&copy; 2024 EasyCash. Tüm Hakları Saklıdır | Design by <a href="http://w3layouts.com/"> W3layouts </a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

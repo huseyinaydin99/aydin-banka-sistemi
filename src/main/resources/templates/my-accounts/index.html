@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/customer_layout :: layout(~{::content}, 'Profil Düzenleme')}">
+<body>
+<div th:fragment="content">
+    <form class="form-horizontal form-label-left" th:action="@{/my-accounts}" th:object="${appUserUpdateDto}" method="post">
+        <p>İletişim ve diğer bilgilerinizi aşağıdan düzenleyebilirsiniz.</p>
+        <span class="section">Müşteri Bilgileri</span>
+
+        <div class="item form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Adınız <span class="required">*</span></label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input class="form-control" th:field="*{name}" required type="text">
+            </div>
+        </div>
+        <div class="item form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Soyadınız <span class="required">*</span></label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input class="form-control" th:field="*{surname}" required type="text">
+            </div>
+        </div>
+        <div class="item form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">İlçe <span class="required">*</span></label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input class="form-control" th:field="*{district}" required type="text">
+            </div>
+        </div>
+        <div class="item form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Şehir <span class="required">*</span></label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input class="form-control" th:field="*{city}" required type="text">
+            </div>
+        </div>
+        <div class="item form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Mail Adresi <span class="required">*</span></label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input class="form-control" th:field="*{email}" required type="email">
+            </div>
+        </div>
+        <div class="item form-group">
+            <label class="control-label col-md-3">Şifreniz</label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input class="form-control" th:field="*{password}" type="password">
+            </div>
+        </div>
+        <div class="item form-group">
+            <label class="control-label col-md-3">Şifre Tekrar</label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input class="form-control" th:field="*{confirmPassword}" type="password">
+            </div>
+        </div>
+
+        <div class="ln_solid"></div>
+        <div class="form-group">
+            <div class="col-md-6 col-md-offset-3">
+                <a th:href="@{/dashboard}" class="btn btn-primary">Vazgeç</a>
+                <button type="submit" class="btn btn-success">Bilgileri Güncelle</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

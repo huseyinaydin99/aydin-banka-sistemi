@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/customer_layout :: layout(~{::content}, 'Dashboard')}">
+<body>
+<div th:fragment="content">
+    <div class="row">
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-dollar"></i></div>
+                <div class="count" th:text="${#numbers.formatDecimal(usdToTry, 1, 2)}">0.00</div>
+                <h3>Dolar - TL</h3>
+                <p>Güncel $ - ₺ Kuru</p>
+            </div>
+        </div>
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-euro"></i></div>
+                <div class="count" th:text="${#numbers.formatDecimal(eurToTry, 1, 2)}">0.00</div>
+                <h3>Euro - TL</h3>
+                <p>Güncel € - ₺ Kuru</p>
+            </div>
+        </div>
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-sort-amount-desc"></i></div>
+                <div class="count" th:text="${#numbers.formatDecimal(gbpToTry, 1, 2)}">0.00</div>
+                <h3>Sterlin - TL</h3>
+                <p>Güncel £ - ₺ Kuru</p>
+            </div>
+        </div>
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-check-square-o"></i></div>
+                <div class="count" th:text="${#numbers.formatDecimal(usdToEur, 1, 2)}">0.00</div>
+                <h3>Dolar - Euro</h3>
+                <p>Güncel $ - € Kuru</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-9 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Döviz Kurları Oranı <small>USD'e göre</small></h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <canvas id="exchangeChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Bildirimler</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <ul class="list-unstyled msg_list">
+                        <li th:each="notification : ${unreadNotifications}">
+                            <a>
+                                <span>
+                                    <span th:text="${notification.title}">Başlık</span>
+                                    <span class="time" th:text="${#temporals.format(notification.date, 'HH:mm')}">Zaman</span>
+                                </span>
+                                <span class="message" th:text="${notification.content}">İçerik</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script th:src="@{/js/ChartExchangeRate.js}"></script>
+</div>
+</body>
+</html>

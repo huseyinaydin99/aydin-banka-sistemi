@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/customer_layout :: layout(~{::content}, 'Kredi Kartlarım')}">
+<body>
+<div th:fragment="content">
+    <div class="table-responsive">
+        <table class="table table-striped jambo_table bulk_action">
+            <thead>
+                <tr class="headings">
+                    <th class="column-title">Kart Sahibi </th>
+                    <th class="column-title">Kart Numarası </th>
+                    <th class="column-title">Son Kullanma Tarihi </th>
+                    <th class="column-title">CVC </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="card : ${cards}" class="even pointer">
+                    <td th:text="${card.cardHolderName}">Ad Soyad</td>
+                    <td th:text="${card.cardNumber}">Kart No</td>
+                    <td th:text="${card.expirationDate}">SKT</td>
+                    <td th:text="${card.cvc}">CVC</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

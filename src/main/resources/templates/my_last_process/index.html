@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/customer_layout :: layout(~{::content}, 'Son İşlemlerim')}">
+<body>
+<div th:fragment="content">
+    <div class="x_title">
+        <h2>Türk Lirası ile Yaptığınız Son İşlemler</h2>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+        <ul class="list-unstyled timeline">
+            <li th:each="item : ${processes}">
+                <div class="block">
+                    <div class="tags">
+                        <a href="" class="tag"><span th:text="${item.processType}">İşlem</span></a>
+                    </div>
+                    <div class="block_content">
+                        <h2 class="title">
+                            <a th:text="'Transfer Tutarı: ' + ${item.amount}">Tutar</a>
+                        </h2>
+                        <div class="byline">
+                            <span th:text="${#temporals.format(item.processDate, 'dd.MM.yyyy HH:mm')}">Tarih</span>
+                        </div>
+                        <p class="excerpt" th:text="${item.description}">Açıklama</p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div th:if="${#lists.isEmpty(processes)}" class="alert alert-info">Henüz işlem bulunmamaktadır.</div>
+    </div>
+</div>
+</body>
+</html>

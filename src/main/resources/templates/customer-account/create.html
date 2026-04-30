@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/customer_layout :: layout(~{::content}, 'Yeni Hesap Açma Talebi')}">
+<body>
+<div th:fragment="content">
+    <form class="form-horizontal form-label-left" th:action="@{/customer-account/create}" th:object="${customerAccountDto}" method="post">
+        <p>Yeni Hesap Talebinde Bulunabilmek İçin Lütfen Aşağıdaki Bilgileri Doldurunuz.</p>
+        
+        <div class="item form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Adınız Soyadınız</label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input class="form-control col-md-7 col-xs-12" th:value="${loginUserName}" type="text" readonly>
+            </div>
+        </div>
+
+        <div class="item form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Hesap Döviz Bilgisi <span class="required">*</span></label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <select th:field="*{currency}" class="form-control col-md-7 col-xs-12">
+                    <option value="TL">TRY - Türk Lirası</option>
+                    <option value="USD">USD - Dolar</option>
+                    <option value="EUR">EUR - Euro</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="item form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Banka Şubesi Bilgisi</label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" th:field="*{bankBranch}" class="form-control col-md-7 col-xs-12">
+            </div>
+        </div>
+
+        <div class="ln_solid"></div>
+        <div class="form-group">
+            <div class="col-md-6 col-md-offset-3">
+                <a th:href="@{/dashboard}" class="btn btn-primary">Vazgeç</a>
+                <button type="submit" class="btn btn-success">Talep Oluştur</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

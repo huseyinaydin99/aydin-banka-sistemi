@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="header">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Easy Cash Müşteri Paneli</title>
+    <link th:href="@{/gentela-gh-pages/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/gentela-gh-pages/vendors/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
+    <link th:href="@{/gentela-gh-pages/vendors/nprogress/nprogress.css}" rel="stylesheet">
+    <link th:href="@{/gentela-gh-pages/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css}" rel="stylesheet" />
+    <link th:href="@{/gentela-gh-pages/build/css/custom.min.css}" rel="stylesheet">
+</head>
+<body>
+
+<div th:fragment="sidebar" class="col-md-3 left_col">
+    <div class="left_col scroll-view">
+        <div class="navbar nav_title" style="border: 0;">
+            <a th:href="@{/dashboard}" class="site_title"><i class="fa fa-paw"></i> <span>Easy Cash</span></a>
+        </div>
+        <div class="clearfix"></div>
+        <div class="profile clearfix">
+            <div class="profile_pic">
+                <img th:src="${loginUserImageUrl}" alt="..." class="img-circle profile_img">
+            </div>
+            <div class="profile_info">
+                <span>Müşteri Paneli</span>
+                <h2 th:text="'Hoş Geldin ' + ${loginUserName}"></h2>
+            </div>
+        </div>
+        <br />
+        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+            <div class="menu_section">
+                <h3>Menüler</h3>
+                <ul class="nav side-menu">
+                    <li><a th:href="@{/dashboard}"><i class="fa fa-home"></i> Dashboard</a></li>
+                    <li>
+                        <a><i class="fa fa-edit"></i> Hesap İşlemleri <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a th:href="@{/my-last-process}">Son İşlemlerim</a></li>
+                            <li><a th:href="@{/qrcode}">QR Kodu Oluştur</a></li>
+                            <li><a th:href="@{/account-list-for-copy}">Iban Bilgisi Paylaş</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a><i class="fa fa-desktop"></i> Hesaplarım <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a th:href="@{/customer-account}">Tüm Hesaplarım</a></li>
+                            <li><a th:href="@{/customer-account/create}">Yeni Hesap Aç</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a><i class="fa fa-car"></i> Para Transferleri <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a th:href="@{/send-money(currency='TL')}">TL Transfer</a></li>
+                            <li><a th:href="@{/send-money(currency='USD')}">Dolar Transfer</a></li>
+                            <li><a th:href="@{/send-money(currency='EUR')}">Euro Transfer</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a><i class="fa fa-table"></i> Ödemeler <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a th:href="@{/electric-bill}">Fatura Ödeme</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a><i class="fa fa-clone"></i>Krediler <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a th:href="@{/credit-card/apply}">Kredi Kartı Başvurusu</a></li>
+                            <li><a th:href="@{/credit-card}">Kredi Kartlarım</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="menu_section">
+                <hr />
+                <ul class="nav side-menu">
+                    <li><a th:href="@{/my-accounts}"><i class="fa fa-cog"></i> Ayarlar </a></li>
+                    <li><a th:href="@{/}"><i class="fa fa-arrow-left"></i> Ana Sayfa</a></li>
+                    <li><a th:href="@{/logout}"><i class="fa fa-close"></i> Çıkış Yap</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="navbar" class="top_nav">
+    <div class="nav_menu">
+        <div class="nav toggle">
+            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+        </div>
+        <nav class="nav navbar-nav">
+            <ul class=" navbar-right">
+                <li class="nav-item dropdown open" style="padding-left: 15px;">
+                    <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                        <img th:src="${loginUserImageUrl}" alt=""><span th:text="${loginUserName}"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" th:href="@{/my-accounts}"> Profil</a>
+                        <a class="dropdown-item" th:href="@{/logout}"><i class="fa fa-sign-out pull-right"></i> Çıkış Yap</a>
+                    </div>
+                </li>
+
+                <li role="presentation" class="nav-item dropdown open">
+                    <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-envelope-o"></i>
+                        <span class="badge bg-green" th:text="${unreadNotifications.size()}">0</span>
+                    </a>
+                    <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
+                        <li class="nav-item" th:each="notification : ${unreadNotifications}">
+                            <a class="dropdown-item">
+                                <span>
+                                    <span th:text="${notification.title}">Başlık</span>
+                                    <span class="time" th:text="${#temporals.format(notification.date, 'dd.MM.yyyy HH:mm')}">Tarih</span>
+                                </span>
+                                <span class="message" th:text="${notification.content}">İçerik</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <div class="text-center">
+                                <a class="dropdown-item" th:href="@{/notification}">
+                                    <strong>Tüm Bildirimleri Gör</strong>
+                                    <i class="fa fa-angle-right"></i>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<footer th:fragment="footer">
+    <div class="pull-right">
+        Easy Cash - Tüm Hakları Saklıdır &copy; 2024
+    </div>
+    <div class="clearfix"></div>
+</footer>
+
+<div th:fragment="scripts">
+    <script th:src="@{/gentela-gh-pages/vendors/jquery/dist/jquery.min.js}"></script>
+    <script th:src="@{/gentela-gh-pages/vendors/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/gentela-gh-pages/vendors/fastclick/lib/fastclick.js}"></script>
+    <script th:src="@{/gentela-gh-pages/vendors/nprogress/nprogress.js}"></script>
+    <script th:src="@{/gentela-gh-pages/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js}"></script>
+    <script th:src="@{/gentela-gh-pages/build/js/custom.min.js}"></script>
+</div>
+
+</body>
+</html>

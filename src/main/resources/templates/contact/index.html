@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Easy Cash - İletişim</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/web/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/web/css/style.css}" type="text/css" media="all" />
+    <link th:href="@{/web/css/font-awesome.css}" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header d-lg-flex justify-content-between align-items-center py-lg-3 px-lg-3">
+                <div id="logo">
+                    <h1><a th:href="@{/}"><span class="fa fa-recycle mr-2"></span>EasyCash</a></h1>
+                </div>
+                <div class="w3pvt-bg">
+                    <div class="nav_w3pvt">
+                        <nav>
+                            <ul class="menu">
+                                <li><a th:href="@{/}">Ana Sayfa</a></li>
+                                <li class="active"><a th:href="@{/contact}">İletişim</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="content-info py-5">
+        <div class="container py-md-5">
+            <div class="text-center px-lg-5">
+                <h3 class="title-w3ls mb-5">Bize Ulaşın</h3>
+                <div class="title-desc text-center px-lg-5">
+                    <p class="px-lg-5 sub-vj">Bize ulaşmak için mesaj atın. Mümkün olan en kısa sürede dönüş yapıyor olacağız :))</p>
+                </div>
+            </div>
+            <div class="contact-w3ls-form mt-5">
+                <form th:action="@{/contact}" th:object="${contactDto}" method="post" class="w3-pvt-contact-fm">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Adınız Soyadınız</label>
+                                <input th:field="*{name}" class="form-control" type="text" required>
+                            </div>
+                            <div class="form-group">
+                                <label>E-Mail</label>
+                                <input th:field="*{email}" class="form-control" type="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Konu</label>
+                                <input th:field="*{subject}" class="form-control" type="text" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Mesajınız</label>
+                                <textarea th:field="*{message}" class="form-control" style="height: 160px;" required></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group mx-auto mt-3">
+                            <button type="submit" class="btn btn-primary submit">Gönder</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer-content py-5">
+        <div class="container py-md-3">
+            <div class="row footer-top-inner-w3-pvt text-center">
+                <div class="col-lg-12">
+                    <p>&copy; 2024 EasyCash. Tüm Hakları Saklıdır.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

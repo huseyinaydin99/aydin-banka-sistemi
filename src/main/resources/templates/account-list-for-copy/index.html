@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/customer_layout :: layout(~{::content}, 'IBAN Bilgileri')}">
+<body>
+<div th:fragment="content">
+    <div class="x_title">
+        <h2>Hesap Numaraları</h2>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content bs-example-popovers">
+        <div th:each="item : ${accounts}" class="alert alert-success alert-dismissible" role="alert" style="font-size:18px; margin-bottom: 20px;">
+            <strong style="font-size:18px;" th:text="'Hesap Döviz Türü: ' + ${item.currency}">Döviz</strong>
+            <br />
+            <span th:text="'Banka: ' + ${item.bankBranch} + ' - Hesap No: ' + ${item.accountNumber}">Bilgi</span>
+            <div class="input-group">
+                <input type="text" th:id="'iban-' + ${item.accountNumber}" class="form-control" th:value="${item.accountNumber}" readonly>
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" th:onclick="'copyIban(\'' + ${item.accountNumber} + '\')'">Iban Kopyala</button>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        function copyIban(accountNumber) {
+            var ibanInput = document.getElementById('iban-' + accountNumber);
+            ibanInput.select();
+            ibanInput.setSelectionRange(0, 99999);
+            document.execCommand('copy');
+            alert('IBAN kopyalandı: ' + ibanInput.value);
+        }
+    </script>
+</div>
+</body>
+</html>

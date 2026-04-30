@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/customer_layout :: layout(~{::content}, 'Tüm Hesaplarım')}">
+<body>
+<div th:fragment="content">
+    <div class="table-responsive">
+        <table class="table table-striped jambo_table bulk_action">
+            <thead>
+                <tr class="headings">
+                    <th class="column-title">Banka Şubesi </th>
+                    <th class="column-title">Hesap Numarası / IBAN </th>
+                    <th class="column-title">CVC </th>
+                    <th class="column-title">Son Kullanma Tarihi </th>
+                    <th class="column-title">Hesap Döviz Bilgisi</th>
+                    <th class="column-title">Hesap Bakiyesi </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="account : ${accounts}" class="even pointer">
+                    <td th:text="${account.bankBranch}">Şube</td>
+                    <td th:text="${account.accountNumber}">Hesap No</td>
+                    <td th:text="${account.cvc}">CVC</td>
+                    <td th:text="${account.expirationDate}">SKT</td>
+                    <td th:text="${account.currency}">Döviz</td>
+                    <td th:text="${account.balance}">Bakiye</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

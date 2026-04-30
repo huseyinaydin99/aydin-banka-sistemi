@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/customer_layout :: layout(~{::content}, 'Bildirimler')}">
+<body>
+<div th:fragment="content">
+    <div class="table-responsive">
+        <table class="table table-striped jambo_table bulk_action">
+            <thead>
+                <tr class="headings">
+                    <th class="column-title">Başlık </th>
+                    <th class="column-title">İçerik</th>
+                    <th class="column-title">Oluşturulma Tarihi </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${notifications}" class="even pointer">
+                    <td th:text="${item.title}">Başlık</td>
+                    <td th:text="${item.content}">İçerik</td>
+                    <td th:text="${#temporals.format(item.date, 'dd.MM.yyyy HH:mm')}">Tarih</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

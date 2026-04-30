@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/fragments/customer_layout_fragments :: header}"></head>
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+        
+        <div th:replace="~{layout/fragments/customer_layout_fragments :: sidebar}"></div>
+        <div th:replace="~{layout/fragments/customer_layout_fragments :: navbar}"></div>
+
+        <div class="right_col" role="main">
+            <div class="">
+                <div class="page-title">
+                    <div class="title_left">
+                        <h3 th:text="${pageTitle}">Sayfa Başlığı</h3>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="x_panel">
+                            <div class="x_content">
+                                <!-- Content will be injected here -->
+                                <div th:insert="${content}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer th:replace="~{layout/fragments/customer_layout_fragments :: footer}"></footer>
+    </div>
+</div>
+
+<div th:replace="~{layout/fragments/customer_layout_fragments :: scripts}"></div>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/customer_layout :: layout(~{::content}, 'Fatura Ödeme')}">
+<body>
+<div th:fragment="content">
+    <div id="wizard" class="form_wizard wizard_horizontal">
+        <ul class="wizard_steps">
+            <li><a href="#step-1"><span class="step_no">1</span><span class="step_descr">Sorgulama</span></a></li>
+            <li><a href="#step-2"><span class="step_no">2</span><span class="step_descr">Borç Detayı</span></a></li>
+            <li><a href="#step-3"><span class="step_no">3</span><span class="step_descr">Ödeme</span></a></li>
+        </ul>
+        
+        <div id="step-1">
+            <form id="step1-form" class="form-horizontal form-label-left">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Fatura Numarası</label>
+                    <div class="col-md-6">
+                        <input type="text" id="billNumber" class="form-control" placeholder="Örn: ELEC-123">
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" id="btn-query">Borç Sorgula</button>
+            </form>
+        </div>
+
+        <div id="step-2" style="display:none;">
+            <div class="form-horizontal form-label-left">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Abone</label>
+                    <div class="col-md-6"><input type="text" id="res-name" class="form-control" readonly></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3">Tutar</label>
+                    <div class="col-md-6"><input type="text" id="res-amount" class="form-control" readonly></div>
+                </div>
+                <button type="button" class="btn btn-success" id="btn-to-pay">Ödeme Adımına Geç</button>
+            </div>
+        </div>
+
+        <div id="step-3" style="display:none;">
+            <div class="form-horizontal form-label-left">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Hesap Seçin</label>
+                    <div class="col-md-6">
+                        <select id="pay-account" class="form-control">
+                            <option th:each="acc : ${accounts}" th:value="${acc.id}" th:text="${acc.accountNumber + ' - ' + acc.balance + ' ' + acc.currency}"></option>
+                        </select>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-dark" id="btn-pay">Ödemeyi Tamamla</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script th:inline="javascript">
+        $(document).ready(function() {
+            $('#btn-query').click(function() {
+                const billNo = $('#billNumber').val();
+                $.post('/electric-bill/query', { billNumber: billNo }, function(res) {
+                    if(res.success) {
+                        $('#res-name').val(res.customerName);
+                        $('#res-amount').val(res.debtAmount);
+                        $('#step-1').hide();
+                        $('#step-2').show();
+                    } else {
+                        Swal.fire('Hata', res.message, 'error');
+                    }
+                });
+            });
+
+            $('#btn-to-pay').click(function() {
+                $('#step-2').hide();
+                $('#step-3').show();
+            });
+
+            $('#btn-pay').click(function() {
+                const billNo = $('#billNumber').val();
+                const accId = $('#pay-account').val();
+                $.post('/electric-bill/pay', { billNumber: billNo, accountId: accId }, function(res) {
+                    if(res.success) {
+                        Swal.fire('Başarılı', 'Ödeme tamamlandı.', 'success').then(() => {
+                            window.location.href = '/dashboard';
+                        });
+                    } else {
+                        Swal.fire('Hata', res.message, 'error');
+                    }
+                });
+            });
+        });
+    </script>
+</div>
+</body>
+</html>

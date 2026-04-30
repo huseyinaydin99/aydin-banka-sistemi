@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>E-Posta Onayı</title>
+    <link th:href="@{/lib/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet" />
+</head>
+<body>
+<div class="container">
+    <br />
+    <br />
+    <form th:action="@{/confirm-mail}" method="post">
+        <h2>Taşınan Mail Adresi: <span th:text="${email}"></span></h2>
+        <br />
+        <label>Kullanıcı Mail Adresi</label>
+        <input type="text" class="form-control" name="email" th:value="${email}" readonly />
+        <br />
+        <label>Mail Adresinize Gelen 6 Haneli Kodu Giriniz</label>
+        <input type="text" class="form-control" name="confirmCode" required />
+        <br />
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        <button class="btn btn-primary">Hesabı Aktifleştir</button>
+    </form>
+</div>
+</body>
+</html>

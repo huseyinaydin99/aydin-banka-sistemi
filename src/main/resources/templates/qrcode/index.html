@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/customer_layout :: layout(~{::content}, 'QR Kod Oluştur')}">
+<body>
+<div th:fragment="content">
+    <div class="x_title">
+        <h2>QR Kod Üretme Paneli</h2>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content text-center">
+        <form th:action="@{/qrcode}" method="post">
+            <div class="form-group">
+                <label>QR Kod Oluşturulacak Hesap Numarası</label>
+                <input type="text" name="text" th:value="${accountNumber}" class="form-control" style="width: 300px; margin: 0 auto; display: block;">
+            </div>
+            <button type="submit" class="btn btn-primary">QR Kod Oluştur</button>
+        </form>
+        <br />
+        <div th:if="${qrCodeImage}">
+            <img th:src="${qrCodeImage}" alt="QR Kod" style="width:300px; height:300px; border: 1px solid #ddd; padding: 10px;" />
+        </div>
+    </div>
+</div>
+</body>
+</html>
