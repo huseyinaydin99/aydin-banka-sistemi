@@ -3,7 +3,10 @@ package tr.com.huseyinaydin.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tr.com.huseyinaydin.business.rules.AppUserRules;
 import tr.com.huseyinaydin.dto.AppUserRegisterDto;
+import tr.com.huseyinaydin.dto.AppUserUpdateDto;
 import tr.com.huseyinaydin.entity.AppUser;
 import tr.com.huseyinaydin.mapper.AppUserMapper;
 import tr.com.huseyinaydin.repository.AppUserRepository;
@@ -34,5 +37,29 @@ public class AppUserServiceImpl implements AppUserService {
         appUserRepository.save(appUser);
         
         mailService.sendMail(appUser.getEmail(), "E-Posta Onay Kodu", "Onay kodunuz: " + code);
+    }
+
+    @Override
+    @Transactional
+    public void updateProfile(String username, AppUserUpdateDto updateDto) {
+        AppUser user = appUserRepository.findByUsername(username).orElse(null);
+        AppUserRules.checkUserExists(user);
+
+        if (updateDto.getEmail() != null && !updateDto.getEmail().equals(user.getEmail())) {
+            AppUserRules.checkEmailIsUnique(appUserRepository.findByEmail(updateDto.getEmail()).isPresent());
+            user.setEmail(updateDto.getEmail());
+        }
+
+        if (updateDto.getName() != null) user.setName(updateDto.getName());
+        if (updateDto.getSurname() != null) user.setSurname(updateDto.getSurname());
+        if (updateDto.getCity() != null) user.setCity(updateDto.getCity());
+        if (updateDto.getDistrict() != null) user.setDistrict(updateDto.getDistrict());
+        if (updateDto.getImageUrl() != null) user.setImageUrl(updateDto.getImageUrl());
+        
+        if (updateDto.getPassword() != null && !updateDto.getPassword().trim().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(updateDto.getPassword()));
+        }
+
+        appUserRepository.save(user);
     }
 }

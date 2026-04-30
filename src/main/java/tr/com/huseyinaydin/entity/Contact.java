@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "contacts")
 @Data
@@ -18,4 +20,5 @@ public class Contact {
     private String email;
     private String subject;
     private String message;
+    private LocalDateTime date;
 }
