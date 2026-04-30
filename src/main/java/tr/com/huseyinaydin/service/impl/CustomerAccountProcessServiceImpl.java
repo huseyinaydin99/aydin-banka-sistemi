@@ -14,6 +14,9 @@ import tr.com.huseyinaydin.service.CustomerAccountProcessService;
 import tr.com.huseyinaydin.validation.CustomerAccountProcessValidator;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -57,5 +60,17 @@ public class CustomerAccountProcessServiceImpl implements CustomerAccountProcess
         process.setProcessDate(LocalDateTime.now());
         process.setProcessType("Havale/EFT");
         processRepository.save(process);
+    }
+
+    @Override
+    public List<CustomerAccountProcessDto> getMyLastProcess(Integer accountId) {
+        List<CustomerAccountProcess> sentProcesses = processRepository.findBySenderCustomerId(accountId);
+        List<CustomerAccountProcess> receivedProcesses = processRepository.findByReceiverCustomerId(accountId);
+
+        return Stream.concat(sentProcesses.stream(), receivedProcesses.stream())
+                .sorted((p1, p2) -> p2.getProcessDate().compareTo(p1.getProcessDate()))
+                .limit(10)
+                .map(processMapper::toDto)
+                .collect(Collectors.toList());
     }
 }

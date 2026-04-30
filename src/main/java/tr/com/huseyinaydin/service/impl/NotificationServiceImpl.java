@@ -20,6 +20,18 @@ public class NotificationServiceImpl implements NotificationService {
     private final NotificationMapper notificationMapper;
 
     @Override
+    public List<NotificationDto> getAll() {
+        return notificationMapper.toDtoList(notificationRepository.findAll());
+    }
+
+    @Override
+    public NotificationDto getById(Integer id) {
+        Notification notification = notificationRepository.findById(id).orElse(null);
+        NotificationRules.checkNotificationExists(notification);
+        return notificationMapper.toDto(notification);
+    }
+
+    @Override
     public List<NotificationDto> getUnreadNotifications() {
         return notificationMapper.toDtoList(notificationRepository.findByIsReadFalse());
     }

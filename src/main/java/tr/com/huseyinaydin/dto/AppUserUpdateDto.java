@@ -11,4 +11,5 @@ public class AppUserUpdateDto {
     private String city;
     private String imageUrl;
     private String password;
+    private String confirmPassword;
 }
