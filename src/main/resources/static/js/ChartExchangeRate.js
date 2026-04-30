@@ -4,56 +4,48 @@
         type: 'GET',
         dataType: 'json',
         success: function (data) {
-            console.log('AJAX başarılı, veri:', data); // Veriyi kontrol edin
-
-            // Veriyi alıp grafikte kullanın
             var exchangeKeys = data.exchangeKey;
             var exchangeValues = data.exchangeValue;
 
-            console.log('Döviz Birimleri:', exchangeKeys);
-            console.log('Döviz Kurları:', exchangeValues);
-
-            // Chart.js ile grafik oluşturma işlemleri
             var ctx = document.getElementById('exchangeChart').getContext('2d');
             var myChart = new Chart(ctx, {
-                type: 'pie', // Pie grafik tipi
+                type: 'bar',
                 data: {
                     labels: exchangeKeys,
                     datasets: [{
-                        label: 'Döviz Kurları',
+                        label: 'Döviz Kurları (Baz: USD)',
                         data: exchangeValues,
                         backgroundColor: [
-                           
-                            '#36A2EB', // Mavi
-                         
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
+                            'rgba(153, 102, 255, 0.6)',
+                            'rgba(255, 159, 64, 0.6)'
                         ],
                         borderColor: [
-                           
-                            '#4BC0C0', // Yeşil
-                            
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
                         ],
-                        borderWidth: 2
+                        borderWidth: 1
                     }]
                 },
                 options: {
                     responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function (context) {
-                                    return context.label + ': ' + context.raw.toFixed(2);
-                                }
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
                             }
-                        }
+                        }]
                     }
                 }
             });
         },
         error: function (xhr, status, error) {
-            console.error('AJAX Hatası:', status, error);
+            console.error('Veri yüklenirken hata oluştu:', status, error);
         }
     });
 });
