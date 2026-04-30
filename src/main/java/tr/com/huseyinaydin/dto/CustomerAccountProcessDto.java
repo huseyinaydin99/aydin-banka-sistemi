@@ -13,4 +13,5 @@ public class CustomerAccountProcessDto {
     private String description;
     private Integer senderId;
     private Integer receiverId;
+    private String receiverAccountNumber;
 }

@@ -13,5 +13,6 @@ public interface CustomerAccountProcessMapper {
 
     @Mapping(target = "senderId", source = "senderCustomer.id")
     @Mapping(target = "receiverId", source = "receiverCustomer.id")
+    @Mapping(target = "receiverAccountNumber", ignore = true)
     CustomerAccountProcessDto toDto(CustomerAccountProcess entity);
 }
