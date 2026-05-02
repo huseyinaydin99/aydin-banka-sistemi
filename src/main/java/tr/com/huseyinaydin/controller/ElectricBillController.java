@@ -1,6 +1,7 @@
 package tr.com.huseyinaydin.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/electric-bill")
 @RequiredArgsConstructor
+@Slf4j
 public class ElectricBillController {
     private final ElectricBillService billService;
     private final CustomerAccountRepository accountRepository;
@@ -35,15 +37,17 @@ public class ElectricBillController {
     @PostMapping("/query")
     @ResponseBody
     public Map<String, Object> queryDebt(@RequestParam String billNumber) {
+        log.info("Fatura sorgulanıyor: {}", billNumber);
         Map<String, Object> response = new HashMap<>();
         try {
-            ElectricBillDto bill = billService.getBillDetails(billNumber);
+            ElectricBillDto bill = billService.getBillDetails(billNumber != null ? billNumber.trim() : "");
+            log.info("Fatura bulundu: {}, Tutar: {}", bill.getBillNumber(), bill.getAmount());
             response.put("success", true);
             response.put("debtAmount", bill.getAmount());
             response.put("customerName", bill.getCustomerName());
         } catch (Exception e) {
             response.put("success", false);
-            response.put("message", "Fatura bulunamadı veya borç yok.");
+            response.put("message", e.getMessage() != null ? e.getMessage() : "Fatura bulunamadı veya borç yok.");
         }
         return response;
     }

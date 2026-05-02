@@ -1,6 +1,7 @@
 package tr.com.huseyinaydin.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tr.com.huseyinaydin.business.rules.ElectricBillRules;
@@ -14,6 +15,7 @@ import tr.com.huseyinaydin.service.ElectricBillService;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ElectricBillServiceImpl implements ElectricBillService {
     private final ElectricBillRepository billRepository;
     private final CustomerAccountRepository accountRepository;
@@ -21,8 +23,15 @@ public class ElectricBillServiceImpl implements ElectricBillService {
 
     @Override
     public ElectricBillDto getBillDetails(String billNumber) {
+        log.info("Repository'den fatura aranıyor: {}", billNumber);
         ElectricBill bill = billRepository.findByBillNumber(billNumber).orElse(null);
+        if (bill == null) {
+            log.warn("Fatura veritabanında bulunamadı: {}", billNumber);
+        } else {
+            log.info("Fatura veritabanında bulundu: {}, Ödenmiş mi: {}", bill.getBillNumber(), bill.getIsPaid());
+        }
         ElectricBillRules.checkBillExists(bill);
+        ElectricBillRules.checkBillIsNotPaid(bill);
         return billMapper.toDto(bill);
     }
 

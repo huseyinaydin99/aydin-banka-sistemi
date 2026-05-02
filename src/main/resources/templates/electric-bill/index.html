@@ -15,7 +15,7 @@
                 <div class="form-group">
                     <label class="control-label col-md-3">Fatura Numarası</label>
                     <div class="col-md-6">
-                        <input type="text" id="billNumber" class="form-control" placeholder="Örn: ELEC-123">
+                        <input type="text" id="billNumber" class="form-control" placeholder="Örn: ELEK-2026-101" value="ELEK-2026-101">
                     </div>
                 </div>
                 <button type="button" class="btn btn-primary" id="btn-query">Borç Sorgula</button>
@@ -56,8 +56,14 @@
     <script th:inline="javascript">
         $(document).ready(function() {
             $('#btn-query').click(function() {
-                const billNo = $('#billNumber').val();
+                const billNo = $('#billNumber').val().trim();
+                console.log("Sorgulanan Fatura No:", billNo);
+                if (!billNo) {
+                    Swal.fire('Uyarı', 'Lütfen fatura numarası giriniz.', 'warning');
+                    return;
+                }
                 $.post('/electric-bill/query', { billNumber: billNo }, function(res) {
+                    console.log("Sorgu Sonucu:", res);
                     if(res.success) {
                         $('#res-name').val(res.customerName);
                         $('#res-amount').val(res.debtAmount);
@@ -66,6 +72,9 @@
                     } else {
                         Swal.fire('Hata', res.message, 'error');
                     }
+                }).fail(function(err) {
+                    console.error("Sorgu Hatası:", err);
+                    Swal.fire('Sistem Hatası', 'Sorgulama sırasında bir hata oluştu.', 'error');
                 });
             });
 

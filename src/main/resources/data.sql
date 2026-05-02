@@ -180,23 +180,24 @@ INSERT INTO credit_cards (card_number, card_holder_name, expiration_date, cvc, u
 -- Örnek Elektrik Faturaları (Onlarca veri)
 INSERT INTO electric_bills (bill_number, customer_name, amount, is_paid) VALUES 
 ('ELEK-2026-101', 'Hüseyin Aydın', 1250.75, false),
-('ELEK-2026-102', 'Hüseyin Aydın', 850.50, true),
 ('ELEK-2026-103', 'Hüseyin Aydın', 920.00, false),
-('ELEK-2026-104', 'Hüseyin Aydın', 1145.20, true),
 ('ELEK-2026-105', 'Hüseyin Aydın', 710.00, false),
-('ELEK-2026-106', 'Hüseyin Aydın', 695.50, true),
 ('ELEK-2026-107', 'Hüseyin Aydın', 1300.00, false),
-('ELEK-2026-108', 'Hüseyin Aydın', 520.40, true),
 ('ELEK-2026-109', 'Hüseyin Aydın', 1450.00, false),
-('ELEK-2026-110', 'Hüseyin Aydın', 1280.60, true),
 ('ELEK-2026-111', 'Hüseyin Aydın', 660.00, false),
-('ELEK-2026-112', 'Hüseyin Aydın', 1230.90, true),
 ('ELEK-2026-113', 'Hüseyin Aydın', 890.00, false),
-('ELEK-2026-114', 'Hüseyin Aydın', 1270.50, true),
 ('ELEK-2026-115', 'Hüseyin Aydın', 1310.00, false),
 ('ELEK-2026-201', 'Ahmet Yılmaz', 450.00, false),
-('ELEK-2026-202', 'Ahmet Yılmaz', 320.00, true),
 ('ELEK-2026-301', 'Ayşe Demir', 560.00, false),
+('ELEK-2026-TEST', 'Hüseyin Aydın', 100.00, false),
+('ELEK-2026-102', 'Hüseyin Aydın', 850.50, true),
+('ELEK-2026-104', 'Hüseyin Aydın', 1145.20, true),
+('ELEK-2026-106', 'Hüseyin Aydın', 695.50, true),
+('ELEK-2026-108', 'Hüseyin Aydın', 520.40, true),
+('ELEK-2026-110', 'Hüseyin Aydın', 1280.60, true),
+('ELEK-2026-112', 'Hüseyin Aydın', 1230.90, true),
+('ELEK-2026-114', 'Hüseyin Aydın', 1270.50, true),
+('ELEK-2026-202', 'Ahmet Yılmaz', 320.00, true),
 ('ELEK-2026-302', 'Ayşe Demir', 210.00, true);
 
 -- Örnek İletişim Mesajları (Onlarca veri)
