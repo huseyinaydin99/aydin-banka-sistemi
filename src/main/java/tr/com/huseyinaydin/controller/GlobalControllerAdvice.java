@@ -20,7 +20,7 @@ public class GlobalControllerAdvice {
 
     @ModelAttribute("loginUserName")
     public String loginUserName(Authentication authentication) {
-        if (authentication != null && authentication.isAuthenticated()) {
+        if (authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof org.springframework.security.core.userdetails.User) {
             AppUser user = appUserRepository.findByUsername(authentication.getName()).orElse(null);
             if (user != null) {
                 return user.getName() + " " + user.getSurname();
@@ -31,7 +31,7 @@ public class GlobalControllerAdvice {
 
     @ModelAttribute("loginUserImageUrl")
     public String loginUserImageUrl(Authentication authentication) {
-        if (authentication != null && authentication.isAuthenticated()) {
+        if (authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof org.springframework.security.core.userdetails.User) {
             AppUser user = appUserRepository.findByUsername(authentication.getName()).orElse(null);
             if (user != null && user.getImageUrl() != null && !user.getImageUrl().isEmpty()) {
                 return user.getImageUrl();
@@ -42,9 +42,18 @@ public class GlobalControllerAdvice {
 
     @ModelAttribute("unreadNotifications")
     public List<NotificationDto> unreadNotifications(Authentication authentication) {
-        if (authentication != null && authentication.isAuthenticated()) {
-            return notificationService.getUnreadNotifications();
+        if (authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof org.springframework.security.core.userdetails.User) {
+            try {
+                return notificationService.getUnreadNotifications();
+            } catch (Exception e) {
+                System.err.println("Bildirimler alınamadı: " + e.getMessage());
+            }
         }
         return Collections.emptyList();
+    }
+
+    @ModelAttribute("pageTitle")
+    public String pageTitle() {
+        return "Banka Sistemi";
     }
 }

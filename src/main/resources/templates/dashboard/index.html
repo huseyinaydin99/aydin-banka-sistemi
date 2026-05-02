@@ -59,10 +59,10 @@
                 <div class="x_content">
                     <ul class="list-unstyled msg_list">
                         <li th:each="notification : ${unreadNotifications}">
-                            <a>
+                            <a th:if="${notification != null}">
                                 <span>
                                     <span th:text="${notification.title}">Başlık</span>
-                                    <span class="time" th:text="${#temporals.format(notification.date, 'HH:mm')}">Zaman</span>
+                                    <span class="time" th:text="${notification.date != null ? #temporals.format(notification.date, 'HH:mm') : ''}">Zaman</span>
                                 </span>
                                 <span class="message" th:text="${notification.content}">İçerik</span>
                             </a>

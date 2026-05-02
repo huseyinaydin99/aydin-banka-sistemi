@@ -27,12 +27,12 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/login", "/confirm-mail", "/contact/**", "/css/**", "/js/**", "/lib/**", "/web/**").permitAll()
+                        .requestMatchers("/register/**", "/login/**", "/confirm-mail/**", "/contact/**", "/css/**", "/js/**", "/lib/**", "/web/**", "/gentela-gh-pages/**", "/favicon.ico", "/*.png", "/user.png").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/dashboard")
+                        .defaultSuccessUrl("/dashboard", true)
                         .permitAll()
                 )
                 .logout(logout -> logout

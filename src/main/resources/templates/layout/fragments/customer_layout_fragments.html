@@ -11,6 +11,11 @@
     <link th:href="@{/gentela-gh-pages/vendors/nprogress/nprogress.css}" rel="stylesheet">
     <link th:href="@{/gentela-gh-pages/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css}" rel="stylesheet" />
     <link th:href="@{/gentela-gh-pages/build/css/custom.min.css}" rel="stylesheet">
+    <style>
+        .nav.side-menu > li > a {
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
@@ -36,7 +41,7 @@
                 <ul class="nav side-menu">
                     <li><a th:href="@{/dashboard}"><i class="fa fa-home"></i> Dashboard</a></li>
                     <li>
-                        <a><i class="fa fa-edit"></i> Hesap İşlemleri <span class="fa fa-chevron-down"></span></a>
+                        <a href="javascript:void(0)"><i class="fa fa-edit"></i> Hesap İşlemleri <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li><a th:href="@{/my-last-process}">Son İşlemlerim</a></li>
                             <li><a th:href="@{/qrcode}">QR Kodu Oluştur</a></li>
@@ -44,14 +49,14 @@
                         </ul>
                     </li>
                     <li>
-                        <a><i class="fa fa-desktop"></i> Hesaplarım <span class="fa fa-chevron-down"></span></a>
+                        <a href="javascript:void(0)"><i class="fa fa-desktop"></i> Hesaplarım <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li><a th:href="@{/customer-account}">Tüm Hesaplarım</a></li>
                             <li><a th:href="@{/customer-account/create}">Yeni Hesap Aç</a></li>
                         </ul>
                     </li>
                     <li>
-                        <a><i class="fa fa-car"></i> Para Transferleri <span class="fa fa-chevron-down"></span></a>
+                        <a href="javascript:void(0)"><i class="fa fa-send"></i> Para Transferleri <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li><a th:href="@{/send-money(currency='TL')}">TL Transfer</a></li>
                             <li><a th:href="@{/send-money(currency='USD')}">Dolar Transfer</a></li>
@@ -59,13 +64,13 @@
                         </ul>
                     </li>
                     <li>
-                        <a><i class="fa fa-table"></i> Ödemeler <span class="fa fa-chevron-down"></span></a>
+                        <a href="javascript:void(0)"><i class="fa fa-table"></i> Ödemeler <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li><a th:href="@{/electric-bill}">Fatura Ödeme</a></li>
                         </ul>
                     </li>
                     <li>
-                        <a><i class="fa fa-clone"></i>Krediler <span class="fa fa-chevron-down"></span></a>
+                        <a href="javascript:void(0)"><i class="fa fa-clone"></i> Krediler <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li><a th:href="@{/credit-card/apply}">Kredi Kartı Başvurusu</a></li>
                             <li><a th:href="@{/credit-card}">Kredi Kartlarım</a></li>
@@ -105,14 +110,14 @@
                 <li role="presentation" class="nav-item dropdown open">
                     <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
                         <i class="fa fa-envelope-o"></i>
-                        <span class="badge bg-green" th:text="${unreadNotifications.size()}">0</span>
+                        <span class="badge bg-green" th:text="${unreadNotifications != null ? unreadNotifications.size() : 0}">0</span>
                     </a>
                     <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
                         <li class="nav-item" th:each="notification : ${unreadNotifications}">
-                            <a class="dropdown-item">
+                            <a class="dropdown-item" th:if="${notification != null}">
                                 <span>
                                     <span th:text="${notification.title}">Başlık</span>
-                                    <span class="time" th:text="${#temporals.format(notification.date, 'dd.MM.yyyy HH:mm')}">Tarih</span>
+                                    <span class="time" th:text="${notification.date != null ? #temporals.format(notification.date, 'dd.MM.yyyy HH:mm') : ''}">Tarih</span>
                                 </span>
                                 <span class="message" th:text="${notification.content}">İçerik</span>
                             </a>
@@ -141,11 +146,39 @@
 
 <div th:fragment="scripts">
     <script th:src="@{/gentela-gh-pages/vendors/jquery/dist/jquery.min.js}"></script>
-    <script th:src="@{/gentela-gh-pages/vendors/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/gentela-gh-pages/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
     <script th:src="@{/gentela-gh-pages/vendors/fastclick/lib/fastclick.js}"></script>
     <script th:src="@{/gentela-gh-pages/vendors/nprogress/nprogress.js}"></script>
     <script th:src="@{/gentela-gh-pages/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js}"></script>
-    <script th:src="@{/gentela-gh-pages/build/js/custom.min.js}"></script>
+    <script th:src="@{/gentela-gh-pages/build/js/custom.js}"></script>
+    <script>
+        $(document).ready(function() {
+            // custom.js içindeki init_sidebar() zaten click eventlerini bağlıyor.
+            // Ancak, bazen sayfa yüklendiğinde CURRENT_URL eşleşmesi otomatik açılmayabiliyor.
+            var CURRENT_URL = window.location.href.split('#')[0].split('?')[0];
+            
+            $('#sidebar-menu').find('a').filter(function() {
+                return this.href == CURRENT_URL;
+            }).each(function() {
+                var $li = $(this).parent('li');
+                $li.addClass('current-page');
+                $li.parents('ul').slideDown();
+                $li.parents('li').addClass('active');
+            });
+
+            // Eğer tıklama hala çalışmıyorsa (custom.js yüklendiği halde), 
+            // temanın beklediği classların doğru yönetildiğinden emin olalım.
+            // Ama stopPropagation yapmayalım ki custom.js de işini yapabilsin.
+            $('.nav.side-menu > li > a').on('click', function(e) {
+                var $li = $(this).parent();
+                if ($li.find('ul.child_menu').length > 0) {
+                    // Tıklanan menüyü aç/kapat mantığı custom.js içinde var.
+                    // Biz sadece görsel destek veriyoruz.
+                    console.log("Menu link clicked: " + $(this).text().trim());
+                }
+            });
+        });
+    </script>
 </div>
 
 </body>

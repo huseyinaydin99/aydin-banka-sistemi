@@ -36,7 +36,13 @@ public class AppUserServiceImpl implements AppUserService {
         
         appUserRepository.save(appUser);
         
-        mailService.sendMail(appUser.getEmail(), "E-Posta Onay Kodu", "Onay kodunuz: " + code);
+        try {
+            mailService.sendMail(appUser.getEmail(), "E-Posta Onay Kodu", "Onay kodunuz: " + code);
+        } catch (Exception e) {
+            System.err.println("Mail gönderme hatası: " + e.getMessage());
+            // Mail gönderilemese bile kullanıcı kaydedildiği için devam ediyoruz.
+            // Gerçek senaryoda bu durum kullanıcıya bildirilmeli veya loglanmalıdır.
+        }
     }
 
     @Override

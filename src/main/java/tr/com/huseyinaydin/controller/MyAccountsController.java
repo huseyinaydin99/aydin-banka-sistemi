@@ -30,7 +30,7 @@ public class MyAccountsController {
         dto.setDistrict(user.getDistrict());
         dto.setImageUrl(user.getImageUrl());
         model.addAttribute("appUserUpdateDto", dto);
-        return "my_accounts/index";
+        return "my-accounts/index";
     }
 
     @PostMapping
@@ -39,6 +39,6 @@ public class MyAccountsController {
             appUserService.updateProfile(authentication.getName(), dto);
             return "redirect:/login";
         }
-        return "my_accounts/index";
+        return "my-accounts/index";
     }
 }

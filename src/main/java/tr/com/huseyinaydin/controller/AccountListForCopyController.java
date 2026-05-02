@@ -21,6 +21,6 @@ public class AccountListForCopyController {
     public String index(Model model, Authentication authentication) {
         AppUser user = appUserRepository.findByUsername(authentication.getName()).orElse(null);
         model.addAttribute("accounts", customerAccountService.getCustomerAccountsList(user.getId()));
-        return "account_list_copy/index";
+        return "account-list-for-copy/index";
     }
 }

@@ -21,20 +21,38 @@ public class DashboardController {
 
     @GetMapping("/dashboard")
     public String index(Model model) {
-        Map<String, Double> rates = currencyService.getExchangeRates();
+        Map<String, Double> rates = new HashMap<>();
+        try {
+            rates = currencyService.getExchangeRates();
+        } catch (Exception e) {
+            System.err.println("Döviz kurları alınamadı: " + e.getMessage());
+        }
+        
+        double tryRate = rates.getOrDefault("TRY", 1.0);
+        double usdRate = rates.getOrDefault("USD", 1.0);
+        double eurRate = rates.getOrDefault("EUR", 1.0);
+        double gbpRate = rates.getOrDefault("GBP", 1.0);
+
         model.addAttribute("rates", rates);
-        model.addAttribute("usdToTry", rates.getOrDefault("TRY", 0.0));
-        model.addAttribute("eurToTry", rates.getOrDefault("TRY", 0.0) / rates.getOrDefault("EUR", 1.0));
-        model.addAttribute("gbpToTry", rates.getOrDefault("TRY", 0.0) / rates.getOrDefault("GBP", 1.0));
-        model.addAttribute("usdToEur", rates.getOrDefault("EUR", 0.0));
+        model.addAttribute("usdToTry", 1.0 / (usdRate != 0 ? usdRate : 1.0));
+        model.addAttribute("eurToTry", 1.0 / (eurRate != 0 ? eurRate : 1.0));
+        model.addAttribute("gbpToTry", 1.0 / (gbpRate != 0 ? gbpRate : 1.0));
+        model.addAttribute("usdToEur", eurRate / (usdRate != 0 ? usdRate : 1.0));
         model.addAttribute("currentDate", LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        model.addAttribute("pageTitle", "Dashboard");
         return "dashboard/index";
     }
 
     @GetMapping("/Dashboard/Chart")
     @ResponseBody
     public Map<String, Object> getChartData() {
-        Map<String, Double> rates = currencyService.getExchangeRates();
+        Map<String, Double> rates = new HashMap<>();
+        try {
+            rates = currencyService.getExchangeRates();
+        } catch (Exception e) {
+            System.err.println("Grafik verileri için döviz kurları alınamadı: " + e.getMessage());
+        }
+        
         Map<String, Object> response = new HashMap<>();
         List<String> keys = new ArrayList<>();
         List<Double> values = new ArrayList<>();
@@ -45,6 +63,11 @@ public class DashboardController {
                 values.add(v);
             }
         });
+
+        if (keys.isEmpty()) {
+            keys.addAll(List.of("TRY", "EUR", "GBP"));
+            values.addAll(List.of(1.0, 0.028, 0.024));
+        }
 
         response.put("exchangeKey", keys);
         response.put("exchangeValue", values);
