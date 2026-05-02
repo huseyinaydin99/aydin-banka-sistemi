@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/customer_layout :: layout(~{::content}, 'Yeni Hesap Açma Talebi')}">
+      th:replace="~{layout/customer_layout :: layout(~{::content}, 'Yeni Hesap Açma Talebi', ~{})}">
 <body>
 <div th:fragment="content">
     <form class="form-horizontal form-label-left" th:action="@{/customer-account/create}" th:object="${customerAccountDto}" method="post">

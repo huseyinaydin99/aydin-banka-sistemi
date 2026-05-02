@@ -22,7 +22,9 @@ public class AppUser {
     private String city;
     private String imageUrl;
     private Integer confirmCode;
+    @Column(unique = true)
     private String email;
+    @Column(unique = true)
     private String username;
     private String password;
 

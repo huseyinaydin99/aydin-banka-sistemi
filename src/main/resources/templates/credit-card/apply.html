@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/customer_layout :: layout(~{::content}, 'Kredi Kartı Başvurusu')}">
+      th:replace="~{layout/customer_layout :: layout(~{::content}, 'Kredi Kartı Başvurusu', ~{})}">
 <body>
 <div th:fragment="content">
     <form class="form-horizontal form-label-left" th:action="@{/credit-card/apply}" th:object="${creditCardDto}" method="post">

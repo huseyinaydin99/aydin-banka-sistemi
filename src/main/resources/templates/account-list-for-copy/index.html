@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/customer_layout :: layout(~{::content}, 'IBAN Bilgileri')}">
+      th:replace="~{layout/customer_layout :: layout(~{::content}, 'IBAN Bilgileri', ~{})}">
 <body>
 <div th:fragment="content">
     <div class="x_title">
@@ -15,7 +15,7 @@
             <div class="input-group">
                 <input type="text" th:id="'iban-' + ${item.accountNumber}" class="form-control" th:value="${item.accountNumber}" readonly>
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="button" th:onclick="'copyIban(\'' + ${item.accountNumber} + '\')'">Iban Kopyala</button>
+                    <button class="btn btn-default" type="button" th:data-iban="${item.accountNumber}" onclick="copyIban(this.getAttribute('data-iban'))">Iban Kopyala</button>
                 </span>
             </div>
         </div>

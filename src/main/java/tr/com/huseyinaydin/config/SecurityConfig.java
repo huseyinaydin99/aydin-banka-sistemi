@@ -25,13 +25,22 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/h2-console/**")
+                        .disable()
+                )
+                .headers(headers -> headers
+                        .frameOptions(frame -> frame.sameOrigin())
+                )
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/", "/register/**", "/login/**", "/confirm-mail/**", "/contact/**", "/css/**", "/js/**", "/lib/**", "/web/**", "/gentela-gh-pages/**", "/favicon.ico", "/*.png", "/user.png").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
+                        .usernameParameter("username")
+                        .passwordParameter("password")
                         .defaultSuccessUrl("/dashboard", true)
                         .permitAll()
                 )

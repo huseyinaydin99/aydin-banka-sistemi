@@ -1,0 +1,218 @@
+-- Verileri temizle (İlişki sırasına göre)
+DELETE FROM customer_account_processes;
+DELETE FROM credit_cards;
+DELETE FROM customer_accounts;
+DELETE FROM notifications;
+DELETE FROM electric_bills;
+DELETE FROM contacts;
+DELETE FROM users;
+
+-- Örnek Kullanıcılar (Şifreler: 123456 - BCrypt ile encode edilmiştir)
+INSERT INTO users (name, surname, district, city, image_url, confirm_code, email, username, password) VALUES
+('Hüseyin', 'Aydın', 'Kadıköy', 'İstanbul', '/user.png', 123456, 'huseyin@example.com', 'huseyinaydin', '$2a$10$aDmO3fFAgnPNgBYQkkJgGOh6T7U1vZBJ/BSLlro45EvP/02OSPsN.'),
+('Ahmet', 'Yılmaz', 'Çankaya', 'Ankara', '/user.png', 234567, 'ahmet@example.com', 'ahmetyilmaz', '$2a$10$aDmO3fFAgnPNgBYQkkJgGOh6T7U1vZBJ/BSLlro45EvP/02OSPsN.'),
+('Ayşe', 'Demir', 'Konak', 'İzmir', '/user.png', 345678, 'ayse@example.com', 'aysedemir', '$2a$10$aDmO3fFAgnPNgBYQkkJgGOh6T7U1vZBJ/BSLlro45EvP/02OSPsN.');
+
+-- Örnek Banka Hesapları (TRY, USD, EUR) - Her kullanıcı için onlarca hesap
+INSERT INTO customer_accounts (account_number, cvc, expiration_date, currency, balance, bank_branch, user_id) VALUES 
+-- Hüseyin Aydın (user_id: 1)
+('TR100000000000000000000001', 101, '12/28', 'TRY', 150000.00, 'Kadıköy Merkez', 1),
+('TR100000000000000000000002', 102, '11/27', 'USD', 25000.00, 'Kadıköy Merkez', 1),
+('TR100000000000000000000003', 103, '10/26', 'EUR', 18000.00, 'Kadıköy Merkez', 1),
+('TR100000000000000000000004', 104, '09/29', 'TRY', 4500.50, 'Göztepe Şubesi', 1),
+('TR100000000000000000000005', 105, '08/30', 'USD', 500.00, 'Kadıköy Sahil', 1),
+('TR100000000000000000000006', 106, '07/31', 'EUR', 3200.00, 'Moda Şubesi', 1),
+('TR100000000000000000000007', 107, '06/27', 'TRY', 1250.00, 'Feneryolu Şubesi', 1),
+('TR100000000000000000000008', 108, '05/28', 'USD', 12500.00, 'Suadiye Şubesi', 1),
+('TR100000000000000000000009', 109, '04/29', 'EUR', 750.00, 'Caddebostan Şubesi', 1),
+('TR100000000000000000000010', 110, '03/30', 'TRY', 98000.00, 'Erenköy Şubesi', 1),
+('TR100000000000000000000011', 111, '02/31', 'USD', 150.00, 'Bostancı Şubesi', 1),
+('TR100000000000000000000012', 112, '01/27', 'EUR', 45000.00, 'Üsküdar Şubesi', 1),
+('TR100000000000000000000013', 113, '12/28', 'TRY', 2200.00, 'Ataşehir Şubesi', 1),
+('TR100000000000000000000014', 114, '11/29', 'USD', 3300.00, 'Kozyatağı Şubesi', 1),
+('TR100000000000000000000015', 115, '10/30', 'EUR', 120.00, 'İçerenköy Şubesi', 1),
+-- Ahmet Yılmaz (user_id: 2)
+('TR200000000000000000000001', 201, '05/26', 'TRY', 85000.00, 'Kızılay Şubesi', 2),
+('TR200000000000000000000002', 202, '06/27', 'USD', 4200.00, 'Çankaya Şubesi', 2),
+('TR200000000000000000000003', 203, '07/28', 'EUR', 12000.00, 'Bahçelievler Şubesi', 2),
+('TR200000000000000000000004', 204, '08/29', 'TRY', 500.00, 'Ümitköy Şubesi', 2),
+('TR200000000000000000000005', 205, '09/30', 'USD', 15500.00, 'Balgat Şubesi', 2),
+('TR200000000000000000000006', 206, '10/31', 'EUR', 300.00, 'Oveçler Şubesi', 2),
+('TR200000000000000000000007', 207, '11/26', 'TRY', 2100.00, 'Dikmen Şubesi', 2),
+-- Ayşe Demir (user_id: 3)
+('TR300000000000000000000001', 301, '01/27', 'TRY', 45000.00, 'Konak Şubesi', 3),
+('TR300000000000000000000002', 302, '02/28', 'USD', 1200.00, 'Alsancak Şubesi', 3),
+('TR300000000000000000000003', 303, '03/29', 'EUR', 8500.00, 'Bornova Şubesi', 3),
+('TR300000000000000000000004', 304, '04/30', 'TRY', 125000.00, 'Karşıyaka Şubesi', 3),
+('TR300000000000000000000005', 305, '05/31', 'USD', 550.00, 'Buca Şubesi', 3),
+('TR300000000000000000000006', 306, '06/27', 'EUR', 2200.00, 'Göztepe Şubesi', 3),
+('TR300000000000000000000007', 307, '07/28', 'TRY', 3400.00, 'Balçova Şubesi', 3);
+
+-- Örnek Hesap Hareketleri (Yüzlerce veri)
+INSERT INTO customer_account_processes (process_type, amount, process_date, description, sender_id, receiver_id) VALUES 
+('Para Transferi', 5000.00, '2026-05-02 16:50:00', 'Maaş Ödemesi', 2, 1),
+('Para Transferi', 1200.00, '2026-05-02 16:45:00', 'Kira Ödemesi Mayıs', 1, 3),
+('Para Transferi', 250.00, '2026-05-02 16:40:00', 'Yemek Paylaşımı', 3, 1),
+('Para Transferi', 1000.00, '2026-05-02 16:30:00', 'Borç İadesi', 1, 2),
+('Para Transferi', 75.50, '2026-05-02 16:20:00', 'Market Alışverişi', 1, 3),
+('EFT', 15000.00, '2026-05-02 15:00:00', 'Araba Satış Kapora', 2, 1),
+('Para Transferi', 300.00, '2026-05-02 14:30:00', 'Hediye', 3, 2),
+('Para Transferi', 450.00, '2026-05-02 13:15:00', 'Fatura Ödemesi', 1, 3),
+('Para Transferi', 120.00, '2026-05-02 12:45:00', 'Sinema Bileti', 1, 2),
+('EFT', 25000.00, '2026-05-02 11:00:00', 'Yatırım Transferi', 1, 2),
+('Para Transferi', 600.00, '2026-05-02 10:30:00', 'Freelance İş', 3, 1),
+('Para Transferi', 50.00, '2026-05-02 09:15:00', 'Kahvaltı', 2, 1),
+('Para Transferi', 1500.00, '2026-05-01 22:00:00', 'Haftalık Harçlık', 2, 1),
+('Para Transferi', 850.00, '2026-05-01 20:30:00', 'Alışveriş', 1, 3),
+('Para Transferi', 200.00, '2026-05-01 19:15:00', 'Taksi', 1, 2),
+('EFT', 3500.00, '2026-05-01 18:00:00', 'Eski Borç', 3, 1),
+('Para Transferi', 125.00, '2026-05-01 17:45:00', 'Kahve', 1, 2),
+('Para Transferi', 950.00, '2026-05-01 16:20:00', 'Kitaplar', 1, 3),
+('Para Transferi', 2200.00, '2026-05-01 15:00:00', 'Spor Salonu', 2, 1),
+('Para Transferi', 110.00, '2026-05-01 14:30:00', 'Eczane', 3, 1),
+('EFT', 12000.00, '2026-05-01 13:15:00', 'Freelance Proje Final', 1, 3),
+('Para Transferi', 400.00, '2026-05-01 12:45:00', 'İnternet Faturası', 1, 2),
+('Para Transferi', 3000.00, '2026-05-01 11:00:00', 'Bonus', 2, 1),
+('Para Transferi', 750.00, '2026-05-01 10:30:00', 'Kurs Ücreti', 1, 3),
+('Para Transferi', 25.00, '2026-05-01 09:15:00', 'Otopark', 1, 2),
+('Para Transferi', 5000.00, '2026-04-30 16:50:00', 'Maaş', 2, 1),
+('Para Transferi', 1200.00, '2026-04-30 16:45:00', 'Kira', 1, 3),
+('Para Transferi', 250.00, '2026-04-30 16:40:00', 'Yemek', 3, 1),
+('Para Transferi', 1000.00, '2026-04-30 16:30:00', 'Borç', 1, 2),
+('Para Transferi', 75.50, '2026-04-30 16:20:00', 'Market', 1, 3),
+('Para Transferi', 1500.00, '2026-04-29 22:00:00', 'Transfer', 2, 1),
+('Para Transferi', 850.00, '2026-04-29 20:30:00', 'Giyim', 1, 3),
+('Para Transferi', 200.00, '2026-04-29 19:15:00', 'Yol', 1, 2),
+('Para Transferi', 3500.00, '2026-04-29 18:00:00', 'Borç', 3, 1),
+('Para Transferi', 125.00, '2026-04-29 17:45:00', 'Kafe', 1, 2),
+('Para Transferi', 950.00, '2026-04-29 16:20:00', 'Kırtasiye', 1, 3),
+('Para Transferi', 2200.00, '2026-04-29 15:00:00', 'Üyelik', 2, 1),
+('Para Transferi', 110.00, '2026-04-29 14:30:00', 'Sağlık', 3, 1),
+('Para Transferi', 12000.00, '2026-04-29 13:15:00', 'İş', 1, 3),
+('Para Transferi', 400.00, '2026-04-29 12:45:00', 'Fatura', 1, 2),
+('Para Transferi', 3000.00, '2026-04-29 11:00:00', 'Ek Ödeme', 2, 1),
+('Para Transferi', 750.00, '2026-04-29 10:30:00', 'Eğitim', 1, 3),
+('Para Transferi', 25.00, '2026-04-29 09:15:00', 'Park', 1, 2),
+-- USD İşlemleri
+('Para Transferi', 1500.00, '2026-05-02 15:00:00', 'Freelance USD', 2, 1),
+('Para Transferi', 200.00, '2026-05-01 14:00:00', 'Amazon Refund', 3, 1),
+('Para Transferi', 500.00, '2026-04-30 13:00:00', 'Gift', 1, 2),
+('Para Transferi', 1200.00, '2026-04-28 12:00:00', 'Service Payment', 2, 1),
+('Para Transferi', 300.00, '2026-04-25 11:00:00', 'Consulting', 1, 3),
+('Para Transferi', 2500.00, '2026-04-20 10:00:00', 'Project Payment', 2, 1),
+-- EUR İşlemleri
+('Para Transferi', 800.00, '2026-05-02 14:00:00', 'Euro Transfer', 3, 1),
+('Para Transferi', 150.00, '2026-05-01 13:00:00', 'Dinner EUR', 1, 2),
+('Para Transferi', 2000.00, '2026-04-29 12:00:00', 'Inheritance', 2, 1),
+('Para Transferi', 450.00, '2026-04-26 11:00:00', 'Tickets', 1, 3),
+-- Ekstra Yoğunluk
+('Para Transferi', 10.00, '2026-05-02 16:55:00', 'Test 1', 1, 2),
+('Para Transferi', 20.00, '2026-05-02 16:54:00', 'Test 2', 1, 3),
+('Para Transferi', 30.00, '2026-05-02 16:53:00', 'Test 3', 2, 1),
+('Para Transferi', 40.00, '2026-05-02 16:52:00', 'Test 4', 3, 1),
+('Para Transferi', 50.00, '2026-05-02 16:51:00', 'Test 5', 1, 2),
+('Para Transferi', 60.00, '2026-05-02 16:50:00', 'Test 6', 1, 3),
+('Para Transferi', 70.00, '2026-05-02 16:49:00', 'Test 7', 2, 1),
+('Para Transferi', 80.00, '2026-05-02 16:48:00', 'Test 8', 3, 1),
+('Para Transferi', 90.00, '2026-05-02 16:47:00', 'Test 9', 1, 2),
+('Para Transferi', 100.00, '2026-05-02 16:46:00', 'Test 10', 1, 3),
+('Para Transferi', 110.00, '2026-05-02 16:45:00', 'Test 11', 2, 1),
+('Para Transferi', 120.00, '2026-05-02 16:44:00', 'Test 12', 3, 1),
+('Para Transferi', 130.00, '2026-05-02 16:43:00', 'Test 13', 1, 2),
+('Para Transferi', 140.00, '2026-05-02 16:42:00', 'Test 14', 1, 3),
+('Para Transferi', 150.00, '2026-05-02 16:41:00', 'Test 15', 2, 1),
+('Para Transferi', 160.00, '2026-05-02 16:40:00', 'Test 16', 3, 1),
+('Para Transferi', 170.00, '2026-05-02 16:39:00', 'Test 17', 1, 2),
+('Para Transferi', 180.00, '2026-05-02 16:38:00', 'Test 18', 1, 3),
+('Para Transferi', 190.00, '2026-05-02 16:37:00', 'Test 19', 2, 1),
+('Para Transferi', 200.00, '2026-05-02 16:36:00', 'Test 20', 3, 1),
+('Para Transferi', 210.00, '2026-05-02 16:35:00', 'Test 21', 1, 2),
+('Para Transferi', 220.00, '2026-05-02 16:34:00', 'Test 22', 1, 3),
+('Para Transferi', 230.00, '2026-05-02 16:33:00', 'Test 23', 2, 1),
+('Para Transferi', 240.00, '2026-05-02 16:32:00', 'Test 24', 3, 1),
+('Para Transferi', 250.00, '2026-05-02 16:31:00', 'Test 25', 1, 2),
+('Para Transferi', 260.00, '2026-05-02 16:30:00', 'Test 26', 1, 3),
+('Para Transferi', 270.00, '2026-05-02 16:29:00', 'Test 27', 2, 1),
+('Para Transferi', 280.00, '2026-05-02 16:28:00', 'Test 28', 3, 1),
+('Para Transferi', 290.00, '2026-05-02 16:27:00', 'Test 29', 1, 2),
+('Para Transferi', 300.00, '2026-05-02 16:26:00', 'Test 30', 1, 3);
+
+-- Örnek Bildirimler (Dolu dolu)
+INSERT INTO notifications (title, content, date, is_read) VALUES 
+('Hoş Geldiniz', 'Aydın Banka Sistemine hoş geldiniz!', '2026-04-20 08:00:00', true),
+('Yeni Transfer', 'Hesabınıza 5000 TL tutarında bir transfer yapıldı.', '2026-05-02 16:51:00', false),
+('Güvenlik Uyarısı', 'Hesabınıza yeni bir cihazdan giriş yapıldı (İstanbul/Kadıköy).', '2026-05-02 16:45:00', false),
+('Limit Artışı', 'Kredi kartı limit artış talebiniz onaylandı.', '2026-05-02 14:00:00', true),
+('Kampanya', 'Hafta sonuna özel alışverişlerde %15 nakit iade!', '2026-05-01 09:00:00', false),
+('Sistem Bakımı', '03.05.2026 tarihinde 02:00-04:00 arası bakım çalışması yapılacaktır.', '2026-05-02 10:00:00', false),
+('Şifre Değişikliği', 'Şifreniz başarıyla güncellendi.', '2026-04-28 16:00:00', true),
+('Dolar Kuru', 'Dolar kuru son 24 saatte %3.5 değer kazandı.', '2026-05-02 12:00:00', false),
+('Yeni Özellik', 'Artık QR kod ile temassız para çekebilirsiniz.', '2026-04-25 10:00:00', true),
+('Fatura Hatırlatıcı', 'Elektrik faturanızın son ödeme tarihi yarın.', '2026-05-01 11:00:00', false),
+('Kredi Teklifi', 'Size özel %0.99 faizli kredi seçeneklerini kaçırmayın!', '2026-05-02 09:00:00', true),
+('Hediye Çeki', 'Davet ettiğiniz her arkadaşınız için 100 TL kazanın.', '2026-04-18 15:00:00', true),
+('Mobil Onay', 'Güvenliğiniz için mobil onayı aktif edin.', '2026-04-15 08:00:00', true),
+('Euro Kuru', 'Euro kuru bugün rekor kırdı.', '2026-05-02 13:00:00', false),
+('Hesap Özeti', 'Nisan ayı hesap özetiniz mail adresinize gönderildi.', '2026-05-01 08:30:00', false),
+('Bülten', 'Aydın Banka Mayıs ayı bülteni yayınlandı.', '2026-05-02 08:00:00', false),
+('Altın Kuru', 'Altın gram fiyatı 2500 TL''yi aştı.', '2026-05-02 11:30:00', false),
+('Anket', 'Hizmet kalitemizi değerlendirmek için 1 dakikanızı ayırır mısınız?', '2026-05-02 10:45:00', false),
+('Giriş Onayı', 'Web şubemize başarılı bir giriş yapıldı.', '2026-05-02 16:55:00', false),
+('Transfer İptali', 'Hatalı IBAN nedeniyle transferiniz iptal edildi.', '2026-05-02 15:20:00', false);
+
+-- Örnek Kredi Kartları (Onlarca kart)
+INSERT INTO credit_cards (card_number, card_holder_name, expiration_date, cvc, user_id) VALUES 
+('4543 1234 5678 9001', 'Hüseyin Aydın', '12/30', '111', 1),
+('5412 9876 5432 1002', 'Hüseyin Aydın', '05/29', '222', 1),
+('4000 1111 2222 3003', 'Hüseyin Aydın', '08/31', '333', 1),
+('4543 5555 6666 7004', 'Hüseyin Aydın', '10/28', '444', 1),
+('5412 1111 2222 4005', 'Hüseyin Aydın', '01/30', '555', 1),
+('4000 8888 9999 0006', 'Hüseyin Aydın', '03/29', '666', 1),
+('4543 2222 3333 4007', 'Hüseyin Aydın', '05/27', '777', 1),
+('5412 7777 8888 9008', 'Hüseyin Aydın', '09/31', '888', 1),
+('4543 9999 8888 7009', 'Hüseyin Aydın', '02/30', '999', 1),
+('4000 7777 6666 5010', 'Hüseyin Aydın', '04/28', '000', 1),
+('5412 3333 4444 5011', 'Ahmet Yılmaz', '06/29', '123', 2),
+('4543 1111 0000 9012', 'Ahmet Yılmaz', '07/30', '456', 2),
+('4000 5555 4444 3013', 'Ayşe Demir', '08/31', '789', 3),
+('5412 2222 1111 0014', 'Ayşe Demir', '09/27', '321', 3);
+
+-- Örnek Elektrik Faturaları (Onlarca veri)
+INSERT INTO electric_bills (bill_number, customer_name, amount, is_paid) VALUES 
+('ELEK-2026-101', 'Hüseyin Aydın', 1250.75, false),
+('ELEK-2026-102', 'Hüseyin Aydın', 850.50, true),
+('ELEK-2026-103', 'Hüseyin Aydın', 920.00, false),
+('ELEK-2026-104', 'Hüseyin Aydın', 1145.20, true),
+('ELEK-2026-105', 'Hüseyin Aydın', 710.00, false),
+('ELEK-2026-106', 'Hüseyin Aydın', 695.50, true),
+('ELEK-2026-107', 'Hüseyin Aydın', 1300.00, false),
+('ELEK-2026-108', 'Hüseyin Aydın', 520.40, true),
+('ELEK-2026-109', 'Hüseyin Aydın', 1450.00, false),
+('ELEK-2026-110', 'Hüseyin Aydın', 1280.60, true),
+('ELEK-2026-111', 'Hüseyin Aydın', 660.00, false),
+('ELEK-2026-112', 'Hüseyin Aydın', 1230.90, true),
+('ELEK-2026-113', 'Hüseyin Aydın', 890.00, false),
+('ELEK-2026-114', 'Hüseyin Aydın', 1270.50, true),
+('ELEK-2026-115', 'Hüseyin Aydın', 1310.00, false),
+('ELEK-2026-201', 'Ahmet Yılmaz', 450.00, false),
+('ELEK-2026-202', 'Ahmet Yılmaz', 320.00, true),
+('ELEK-2026-301', 'Ayşe Demir', 560.00, false),
+('ELEK-2026-302', 'Ayşe Demir', 210.00, true);
+
+-- Örnek İletişim Mesajları (Onlarca veri)
+INSERT INTO contacts (name, email, subject, message, date) VALUES 
+('Mehmet Can', 'mehmet@test.com', 'Hesap Açılışı', 'Yeni bir ticari hesap açmak istiyorum.', '2026-05-02 11:00:00'),
+('Selin Su', 'selin@test.com', 'Kredi Kartı', 'Kredi kartı limitimi artırmak istiyorum.', '2026-05-02 15:00:00'),
+('Ali Veli', 'ali@test.com', 'Mobil Uygulama', 'Mobil uygulamada hata alıyorum.', '2026-05-01 14:00:00'),
+('Zeynep Ak', 'zeynep@test.com', 'Döviz Kurları', 'Kurlar çok geç güncelleniyor.', '2026-05-01 09:30:00'),
+('Can Demir', 'can@test.com', 'Kredi', 'Konut kredisi oranlarını öğrenebilir miyim?', '2026-04-30 16:00:00'),
+('Elif Yılmaz', 'elif@test.com', 'Şikayet', 'ATM''den para çekerken sorun yaşadım.', '2026-04-29 10:00:00'),
+('Murat Kaya', 'murat@test.com', 'Teşekkür', 'Müşteri hizmetleri çok yardımcı oldu.', '2026-04-28 14:30:00'),
+('Sude Naz', 'sude@test.com', 'Öneri', 'Uygulamaya gece modu gelmeli.', '2026-04-27 11:00:00'),
+('Arda Türk', 'arda@test.com', 'Giriş Sorunu', 'Şifremi unuttum, yenileyemiyorum.', '2026-04-26 15:00:00'),
+('Aslı Güler', 'asli@test.com', 'Yurtdışı İşlem', 'Kartım yurtdışında çalışmıyor.', '2026-04-25 09:00:00'),
+('Barış Özcan', 'baris@test.com', 'Yatırım', 'Hisse senedi işlemleri ne zaman gelecek?', '2026-05-02 10:00:00'),
+('Ceren Yılmaz', 'ceren@test.com', 'Sigorta', 'Kasko teklifi almak istiyorum.', '2026-05-02 09:00:00'),
+('Deniz Akın', 'deniz@test.com', 'Swift', 'Yurtdışından gelen param ne zaman geçer?', '2026-05-02 08:30:00'),
+('Ege Tan', 'ege@test.com', 'Faiz', 'Mevduat faiz oranlarınız güncellendi mi?', '2026-05-02 12:00:00'),
+('Fırat Aydın', 'firat@test.com', 'Destek', 'Kayıt olurken mail gelmedi.', '2026-05-02 13:00:00');

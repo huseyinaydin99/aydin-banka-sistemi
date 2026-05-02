@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/customer_layout :: layout(~{::content}, 'Fatura Ödeme')}">
+      th:replace="~{layout/customer_layout :: layout(~{::content}, 'Fatura Ödeme', ~{})}">
 <body>
 <div th:fragment="content">
     <div id="wizard" class="form_wizard wizard_horizontal">

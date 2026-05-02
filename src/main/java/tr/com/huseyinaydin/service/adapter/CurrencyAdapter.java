@@ -23,6 +23,10 @@ public class CurrencyAdapter implements CurrencyService {
                 if (apiRates.containsKey("USD")) rates.put("USD", Double.valueOf(apiRates.get("USD").toString()));
                 if (apiRates.containsKey("EUR")) rates.put("EUR", Double.valueOf(apiRates.get("EUR").toString()));
                 if (apiRates.containsKey("GBP")) rates.put("GBP", Double.valueOf(apiRates.get("GBP").toString()));
+                if (apiRates.containsKey("CHF")) rates.put("CHF", Double.valueOf(apiRates.get("CHF").toString()));
+                if (apiRates.containsKey("CAD")) rates.put("CAD", Double.valueOf(apiRates.get("CAD").toString()));
+                if (apiRates.containsKey("JPY")) rates.put("JPY", Double.valueOf(apiRates.get("JPY").toString()));
+                if (apiRates.containsKey("AUD")) rates.put("AUD", Double.valueOf(apiRates.get("AUD").toString()));
                 if (apiRates.containsKey("TRY")) rates.put("TRY", Double.valueOf(apiRates.get("TRY").toString()));
             }
         } catch (Exception e) {

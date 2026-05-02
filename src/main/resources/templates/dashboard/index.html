@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/customer_layout :: layout(~{::content}, 'Dashboard')}">
+      th:replace="~{layout/customer_layout :: layout(~{::content}, 'Dashboard', ~{::scripts})}">
 <body>
 <div th:fragment="content">
     <div class="row">
@@ -72,9 +72,18 @@
             </div>
         </div>
     </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+</div>
+<div th:fragment="scripts">
+    <script th:src="@{/gentela-gh-pages/vendors/Chart.js/dist/Chart.min.js}"></script>
     <script th:src="@{/js/ChartExchangeRate.js}"></script>
+    <script>
+        console.log("Dashboard index scripts loaded.");
+        if (typeof Chart === 'undefined') {
+            console.error("Chart.js is NOT loaded!");
+        } else {
+            console.log("Chart.js is loaded successfully.");
+        }
+    </script>
 </div>
 </body>
 </html>

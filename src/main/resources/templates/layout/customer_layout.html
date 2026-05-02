@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:fragment="layout(content, pageTitle)">
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="layout(content, pageTitle, extra_scripts)">
 <head th:replace="~{layout/fragments/customer_layout_fragments :: header}"></head>
 <body class="nav-md">
 <div class="container body">
@@ -34,5 +34,6 @@
 </div>
 
 <div th:replace="~{layout/fragments/customer_layout_fragments :: scripts}"></div>
+<div th:if="${extra_scripts != null}" th:insert="${extra_scripts}"></div>
 </body>
 </html>

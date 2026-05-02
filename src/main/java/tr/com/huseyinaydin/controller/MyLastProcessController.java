@@ -24,7 +24,7 @@ public class MyLastProcessController {
     public String index(Model model, Authentication authentication) {
         AppUser user = appUserRepository.findByUsername(authentication.getName()).orElse(null);
         CustomerAccount tlAccount = customerAccountRepository.findByAppUserId(user.getId()).stream()
-                .filter(x -> "TL".equalsIgnoreCase(x.getCurrency()))
+                .filter(x -> "TRY".equalsIgnoreCase(x.getCurrency()) || "TL".equalsIgnoreCase(x.getCurrency()))
                 .findFirst()
                 .orElse(null);
         

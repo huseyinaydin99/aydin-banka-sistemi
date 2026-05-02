@@ -52,21 +52,35 @@ public class DashboardController {
         } catch (Exception e) {
             System.err.println("Grafik verileri için döviz kurları alınamadı: " + e.getMessage());
         }
+
+        // TRY bazlı kurları USD bazlı kurlara çevir (1 USD = X Currency)
+        double tryToBaseUsd = rates.getOrDefault("USD", 1.0);
         
         Map<String, Object> response = new HashMap<>();
         List<String> keys = new ArrayList<>();
         List<Double> values = new ArrayList<>();
 
+        // İstenen para birimleri için USD karşılıklarını hesapla (1 USD = X Birim)
+        Map<String, Double> usdBasedRates = new HashMap<>();
         rates.forEach((k, v) -> {
-            if (List.of("TRY", "EUR", "GBP", "CHF", "CAD").contains(k)) {
-                keys.add(k);
-                values.add(v);
+            if (v != null && v != 0) {
+                usdBasedRates.put(k, v / tryToBaseUsd);
+            }
+        });
+
+        // TRY, EUR, GBP, CHF, CAD, JPY, AUD gibi kurları ekle
+        List.of("TRY", "EUR", "GBP", "CHF", "CAD", "JPY", "AUD").forEach(symbol -> {
+            if (usdBasedRates.containsKey(symbol)) {
+                keys.add(symbol);
+                values.add(usdBasedRates.get(symbol));
             }
         });
 
         if (keys.isEmpty()) {
-            keys.addAll(List.of("TRY", "EUR", "GBP"));
-            values.addAll(List.of(1.0, 0.028, 0.024));
+            System.out.println("No exchange rates found for chart, using fallback values.");
+            keys.add("TRY"); values.add(33.48);
+            keys.add("EUR"); values.add(0.91);
+            keys.add("GBP"); values.add(0.78);
         }
 
         response.put("exchangeKey", keys);

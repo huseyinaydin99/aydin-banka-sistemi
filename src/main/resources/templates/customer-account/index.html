@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/customer_layout :: layout(~{::content}, ${pageTitle != null ? pageTitle : 'Tüm Hesaplarım'})}">
+      th:replace="~{layout/customer_layout :: layout(~{::content}, ${pageTitle != null ? pageTitle : 'Tüm Hesaplarım'}, ~{})}">
 <body>
 <div th:fragment="content">
     <div class="table-responsive">
