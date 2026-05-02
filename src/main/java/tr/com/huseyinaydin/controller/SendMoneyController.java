@@ -25,10 +25,10 @@ public class SendMoneyController {
     private final AppUserRepository appUserRepository;
 
     @GetMapping("/send-money")
-    public String index(@RequestParam(name = "currency", defaultValue = "TL") String currency, Authentication authentication, Model model) {
+    public String index(@RequestParam(name = "currency", defaultValue = "TRY") String currency, Authentication authentication, Model model) {
         AppUser user = appUserRepository.findByUsername(authentication.getName()).orElseThrow();
         List<CustomerAccount> accounts = accountRepository.findByAppUserId(user.getId()).stream()
-                .filter(a -> a.getCurrency().equals(currency))
+                .filter(a -> a.getCurrency().equalsIgnoreCase(currency))
                 .collect(Collectors.toList());
 
         model.addAttribute("currency", currency);
@@ -38,12 +38,20 @@ public class SendMoneyController {
     }
 
     @PostMapping("/send-money")
-    public String sendMoney(CustomerAccountProcessDto processDto, Model model) {
+    public String sendMoney(CustomerAccountProcessDto processDto, @RequestParam(name = "currency", defaultValue = "TRY") String currency, Authentication authentication, Model model) {
         try {
             processService.sendMoney(processDto);
             return "redirect:/dashboard";
         } catch (Exception e) {
+            AppUser user = appUserRepository.findByUsername(authentication.getName()).orElseThrow();
+            List<CustomerAccount> accounts = accountRepository.findByAppUserId(user.getId()).stream()
+                    .filter(a -> a.getCurrency().equalsIgnoreCase(currency))
+                    .collect(Collectors.toList());
+
+            model.addAttribute("accounts", accounts);
+            model.addAttribute("currency", currency);
             model.addAttribute("error", e.getMessage());
+            model.addAttribute("processDto", processDto);
             return "send-money/index";
         }
     }

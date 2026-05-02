@@ -9,7 +9,7 @@
     </div>
     <div class="x_content">
         <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
-        <form class="form-horizontal form-label-left" th:action="@{/send-money}" th:object="${processDto}" method="post">
+        <form class="form-horizontal form-label-left" th:action="@{/send-money(currency=${currency})}" th:object="${processDto}" method="post">
             <p>Lütfen havale göndermek istediğiniz kişinin bilgilerini eksiksiz giriniz.</p>
             
             <span class="section">Hesap Bilgileri</span>

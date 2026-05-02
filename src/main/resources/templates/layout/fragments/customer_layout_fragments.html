@@ -11,33 +11,160 @@
     <link th:href="@{/gentela-gh-pages/vendors/nprogress/nprogress.css}" rel="stylesheet">
     <link th:href="@{/gentela-gh-pages/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css}" rel="stylesheet" />
     <link th:href="@{/gentela-gh-pages/build/css/custom.min.css}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        body {
+            font-family: 'Poppins', sans-serif !important;
+            background: #f4f7f6;
+        }
         .nav.side-menu > li > a {
             cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .nav.side-menu > li > a:hover {
+            background: rgba(255,255,255,0.05);
+            padding-left: 25px;
+        }
+        .x_panel {
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: none;
+            margin-bottom: 25px;
+            transition: transform 0.3s ease;
+        }
+        .x_panel:hover {
+            transform: translateY(-5px);
+        }
+        .profile_info h2 {
+            font-weight: 600;
+            color: #ecf0f1;
+        }
+        .top_nav {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            width: 100%;
+        }
+        .nav_menu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 230px;
+            z-index: 1001;
+            transition: left 0.3s ease;
+            background: #fff;
+            border-bottom: 1px solid #e2e2e2;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 60px;
+        }
+        body.nav-sm .nav_menu {
+            left: 70px;
+        }
+        .top_nav .nav_menu .nav.toggle {
+            float: none;
+            margin: 0;
+            padding: 0;
+            width: auto;
+            flex-shrink: 0;
+        }
+        .top_nav .nav_menu .navbar-nav {
+            float: none;
+            flex-grow: 1;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar-right {
+            margin: 0 !important;
+            display: flex;
+            align-items: center;
+            list-style: none;
+            padding: 0;
+            flex-direction: row;
+            width: auto;
+            margin-left: auto !important;
+        }
+        .navbar-right li {
+            margin-left: 20px;
+        }
+        .nav-item.dropdown .dropdown-menu {
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: none;
+            margin-top: 10px;
+        }
+        .badge.bg-green {
+            background: #1abc9c !important;
+            border: 2px solid #fff;
+        }
+        .user-profile img {
+            border: 2px solid #1abc9c;
+        }
+        .sidebar-footer a {
+            background: #2A3F54 !important;
+        }
+        .btn-primary {
+            background: #1abc9c;
+            border-color: #1abc9c;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(26, 188, 156, 0.3);
+        }
+        .right_col {
+            background: #f4f7f6 !important;
+            padding-bottom: 0 !important;
+            margin-left: 0 !important;
+        }
+        footer {
+            background: #fff;
+            padding: 15px 20px;
+            border-top: 1px solid #e2e2e2;
+            width: 100%;
+            z-index: 101;
+            transition: all 0.3s ease;
+            margin-top: auto;
+        }
+        body.nav-sm footer {
+            width: 100%;
+        }
+        body.nav-sm .left_col {
+            width: 70px !important;
+        }
+        body.nav-sm .left_col .scroll-view {
+            width: 70px !important;
         }
     </style>
 </head>
 <body>
 
-<div th:fragment="sidebar" class="col-md-3 left_col">
-    <div class="left_col scroll-view">
-        <div class="navbar nav_title" style="border: 0;">
-            <a th:href="@{/dashboard}" class="site_title"><i class="fa fa-paw"></i> <span>Easy Cash</span></a>
+<div th:fragment="sidebar" class="left_col" style="width: 230px; flex-shrink: 0; float: none !important; padding: 0 !important; display: flex; position: relative; z-index: 102;">
+    <div class="left_col scroll-view" style="background: #2A3F54; width: 100%; display: flex; flex-direction: column; height: 100%;">
+        <div class="navbar nav_title" style="border: 0; background: #2A3F54; padding-left: 10px;">
+            <a th:href="@{/dashboard}" class="site_title" style="font-weight: 700; font-size: 22px;"><i class="fa fa-university"></i> <span>Easy Cash</span></a>
         </div>
         <div class="clearfix"></div>
         <div class="profile clearfix">
             <div class="profile_pic">
                 <img th:src="${loginUserImageUrl}" alt="..." class="img-circle profile_img">
             </div>
-            <div class="profile_info">
-                <span>Müşteri Paneli</span>
-                <h2 th:text="'Hoş Geldin ' + ${loginUserName}"></h2>
+            <div class="profile_info" style="padding-top: 15px;">
+                <span style="color: #9ab1c1; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Müşteri Paneli</span>
+                <h2 th:text="'Hoş Geldin, ' + ${loginUserName}" style="margin: 5px 0 0 0; font-size: 16px; font-weight: 600;"></h2>
             </div>
         </div>
         <br />
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-            <div class="menu_section">
-                <h3>Menüler</h3>
+            <div class="menu_section" style="margin-bottom: 20px;">
+                <h3 style="padding-left: 20px; color: #5A738E; font-size: 11px; text-transform: uppercase; letter-spacing: 2px;">Ana Menü</h3>
                 <ul class="nav side-menu">
                     <li><a th:href="@{/dashboard}"><i class="fa fa-home"></i> Dashboard</a></li>
                     <li>
@@ -60,7 +187,7 @@
                     <li>
                         <a href="javascript:void(0)"><i class="fa fa-send"></i> Para Transferleri <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            <li><a th:href="@{/send-money(currency='TL')}">TL Transfer</a></li>
+                            <li><a th:href="@{/send-money(currency='TRY')}">TL Transfer</a></li>
                             <li><a th:href="@{/send-money(currency='USD')}">Dolar Transfer</a></li>
                             <li><a th:href="@{/send-money(currency='EUR')}">Euro Transfer</a></li>
                         </ul>
@@ -95,30 +222,20 @@
 <div th:fragment="navbar" class="top_nav">
     <div class="nav_menu">
         <div class="nav toggle">
-            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+            <a id="menu_toggle"><i class="fa fa-bars" style="font-size: 20px; color: #5A738E; cursor: pointer;"></i></a>
         </div>
         <nav class="nav navbar-nav">
-            <ul class=" navbar-right">
-                <li class="nav-item dropdown open" style="padding-left: 15px;">
-                    <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                        <img th:src="${loginUserImageUrl}" alt=""><span th:text="${loginUserName}"></span>
-                    </a>
-                    <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" th:href="@{/my-accounts}"> Profil</a>
-                        <a class="dropdown-item" th:href="@{/logout}"><i class="fa fa-sign-out pull-right"></i> Çıkış Yap</a>
-                    </div>
-                </li>
-
-                <li role="presentation" class="nav-item dropdown open">
-                    <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
-                        <i class="fa fa-envelope-o"></i>
-                        <span class="badge bg-green" th:text="${unreadNotifications != null ? unreadNotifications.size() : 0}">0</span>
+            <ul class="navbar-right">
+                <li role="presentation" class="nav-item dropdown">
+                    <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false" style="padding: 15px 10px;">
+                        <i class="fa fa-envelope-o" style="font-size: 18px;"></i>
+                        <span class="badge bg-green" th:text="${unreadNotifications != null ? unreadNotifications.size() : 0}" style="top: 8px; right: 2px;">0</span>
                     </a>
                     <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
                         <li class="nav-item" th:each="notification : ${unreadNotifications}">
                             <a class="dropdown-item" th:if="${notification != null}">
                                 <span>
-                                    <span th:text="${notification.title}">Başlık</span>
+                                    <span th:text="${notification.title}" style="font-weight: 600;">Başlık</span>
                                     <span class="time" th:text="${notification.date != null ? #temporals.format(notification.date, 'dd.MM.yyyy HH:mm') : ''}">Tarih</span>
                                 </span>
                                 <span class="message" th:text="${notification.content}">İçerik</span>
@@ -126,7 +243,7 @@
                         </li>
                         <li class="nav-item">
                             <div class="text-center">
-                                <a class="dropdown-item" th:href="@{/notification}">
+                                <a class="dropdown-item" th:href="@{/notification}" style="padding: 10px;">
                                     <strong>Tüm Bildirimleri Gör</strong>
                                     <i class="fa fa-angle-right"></i>
                                 </a>
@@ -134,16 +251,26 @@
                         </li>
                     </ul>
                 </li>
+
+                <li class="nav-item dropdown" style="padding-left: 10px;">
+                    <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false" style="color: #5A738E; font-weight: 600; display: flex; align-items: center; padding: 15px 0;">
+                        <img th:src="${loginUserImageUrl}" alt="" style="width: 35px; height: 35px; margin-right: 10px; border-radius: 50%; border: 2px solid #1abc9c;"><span th:text="${loginUserName}"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" th:href="@{/my-accounts}"><i class="fa fa-user pull-right"></i> Profil</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" th:href="@{/logout}"><i class="fa fa-sign-out pull-right"></i> Çıkış Yap</a>
+                    </div>
+                </li>
             </ul>
         </nav>
     </div>
 </div>
 
 <footer th:fragment="footer">
-    <div class="pull-right">
-        Easy Cash - Tüm Hakları Saklıdır &copy; 2024
-    </div>
-    <div class="clearfix"></div>
+    <p>
+        Aydın Banka Sistemi - Modern Bankacılık Deneyimi &copy; 2026
+    </p>
 </footer>
 
 <div th:fragment="scripts">

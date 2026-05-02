@@ -3,33 +3,50 @@
 <head th:replace="~{layout/fragments/customer_layout_fragments :: header}"></head>
 <body class="nav-md">
 <div class="container body">
-    <div class="main_container">
-        
+    <div class="main_container" style="display: flex; min-height: 100vh; background: #2A3F54;">
         <div th:replace="~{layout/fragments/customer_layout_fragments :: sidebar}"></div>
-        <div th:replace="~{layout/fragments/customer_layout_fragments :: navbar}"></div>
 
-        <div class="right_col" role="main">
-            <div class="">
-                <div class="page-title">
+        <div class="right_col" role="main"
+             style="flex: 1; display: flex; flex-direction: column; min-height: 100vh; position: relative; overflow-x: hidden; background: #f4f7f6 !important; margin-left: 0 !important;">
+            <div th:replace="~{layout/fragments/customer_layout_fragments :: navbar}"></div>
+
+            <div style="flex: 1; padding: 20px; padding-top: 100px; display: flex; flex-direction: column; width: 100%;">
+                <div class="page-title" style="margin-bottom: 25px; width: 100%;">
                     <div class="title_left">
-                        <h3 th:text="${pageTitle}">Sayfa Başlığı</h3>
+                        <h3 th:text="${pageTitle}" style="font-weight: 700; color: #2A3F54; margin: 0;">Sayfa
+                            Başlığı</h3>
                     </div>
                 </div>
                 <div class="clearfix"></div>
-                <div class="row">
-                    <div class="col-md-12 col-sm-12">
-                        <div class="x_panel">
-                            <div class="x_content">
+                <div class="row" style="width: 100%; margin: 0;">
+                    <div class="col-md-12 col-sm-12" style="padding: 0;">
+                        <div class="x_panel"
+                             style="border-radius: 15px; border: none; box-shadow: 0 4px 25px rgba(0,0,0,0.06); background: #fff; margin-bottom: 20px;">
+                            <div class="x_content" style="padding: 20px; flex: 1;">
                                 <!-- Content will be injected here -->
                                 <div th:insert="${content}"></div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!--
+                <footer
+                        th:replace="~{layout/fragments/customer_layout_fragments :: footer}"
+                        style="
+                            all: initial;
+                            display: block;
+                            box-sizing: border-box;
+                            font-family: Arial, sans-serif;
+                            color: #000;
+                            isolation: isolate;
+                          ">
+                </footer>
+                -->
+                <p>
+                    Aydın Banka Sistemi - Modern Bankacılık Deneyimi &copy; 2026
+                </p>
             </div>
         </div>
-
-        <footer th:replace="~{layout/fragments/customer_layout_fragments :: footer}"></footer>
     </div>
 </div>
 

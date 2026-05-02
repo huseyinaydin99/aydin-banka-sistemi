@@ -39,32 +39,34 @@
     </div>
 
     <div class="row">
-        <div class="col-md-9 col-sm-12 col-xs-12">
-            <div class="x_panel">
+        <div class="col-md-8 col-sm-12 col-xs-12">
+            <div class="x_panel" style="height: 100%; min-height: 450px;">
                 <div class="x_title">
-                    <h2>Döviz Kurları Oranı <small>USD'e göre</small></h2>
+                    <h2 style="font-weight: 600; color: #2A3F54;">Döviz Kurları Oranı <small>USD'e göre</small></h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <canvas id="exchangeChart" width="400" height="200"></canvas>
+                    <div style="position: relative; height: 350px; width: 100%;">
+                        <canvas id="exchangeChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-sm-12 col-xs-12">
-            <div class="x_panel">
+        <div class="col-md-4 col-sm-12 col-xs-12">
+            <div class="x_panel" style="height: 100%; min-height: 450px;">
                 <div class="x_title">
-                    <h2>Bildirimler</h2>
+                    <h2 style="font-weight: 600; color: #2A3F54;">Bildirimler</h2>
                     <div class="clearfix"></div>
                 </div>
-                <div class="x_content">
+                <div class="x_content" style="max-height: 380px; overflow-y: auto;">
                     <ul class="list-unstyled msg_list">
-                        <li th:each="notification : ${unreadNotifications}">
-                            <a th:if="${notification != null}">
-                                <span>
-                                    <span th:text="${notification.title}">Başlık</span>
-                                    <span class="time" th:text="${notification.date != null ? #temporals.format(notification.date, 'HH:mm') : ''}">Zaman</span>
-                                </span>
-                                <span class="message" th:text="${notification.content}">İçerik</span>
+                        <li th:each="notification : ${unreadNotifications}" style="border-bottom: 1px solid #f1f1f1; padding: 10px 0;">
+                            <a th:if="${notification != null}" style="display: block; width: 100%;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                                    <span th:text="${notification.title}" style="font-weight: 600; color: #2A3F54;">Başlık</span>
+                                    <span class="time" th:text="${notification.date != null ? #temporals.format(notification.date, 'HH:mm') : ''}" style="font-size: 11px; color: #999;">Zaman</span>
+                                </div>
+                                <span class="message" th:text="${notification.content}" style="font-size: 13px; color: #5A738E; display: block; white-space: normal;">İçerik</span>
                             </a>
                         </li>
                     </ul>
