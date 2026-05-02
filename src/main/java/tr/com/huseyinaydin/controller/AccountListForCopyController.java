@@ -11,7 +11,7 @@ import tr.com.huseyinaydin.repository.AppUserRepository;
 import tr.com.huseyinaydin.service.CustomerAccountService;
 
 @Controller
-@RequestMapping("/account-list-copy")
+@RequestMapping("/account-list-for-copy")
 @RequiredArgsConstructor
 public class AccountListForCopyController {
     private final AppUserRepository appUserRepository;

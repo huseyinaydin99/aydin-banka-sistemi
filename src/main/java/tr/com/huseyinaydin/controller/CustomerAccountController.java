@@ -29,7 +29,8 @@ public class CustomerAccountController {
     @GetMapping("/create")
     public String createAccount(Model model, Authentication authentication) {
         AppUser user = appUserRepository.findByUsername(authentication.getName()).orElse(null);
-        model.addAttribute("nameSurname", user.getName() + " " + user.getSurname());
+        model.addAttribute("loginUserName", user.getName() + " " + user.getSurname());
+        model.addAttribute("customerAccountDto", new CustomerAccountDto());
         return "customer-account/create";
     }
 
@@ -45,13 +46,15 @@ public class CustomerAccountController {
     public String getCustomerUSDAccountsList(Model model, Authentication authentication) {
         AppUser user = appUserRepository.findByUsername(authentication.getName()).orElse(null);
         model.addAttribute("accounts", customerAccountService.getCustomerUSDAccountsList(user.getId()));
-        return "customer-account/usd_list";
+        model.addAttribute("pageTitle", "Dolar Hesaplarım");
+        return "customer-account/index";
     }
 
     @GetMapping("/eur-list")
     public String getCustomerEURAccountsList(Model model, Authentication authentication) {
         AppUser user = appUserRepository.findByUsername(authentication.getName()).orElse(null);
         model.addAttribute("accounts", customerAccountService.getCustomerEURAccountsList(user.getId()));
-        return "customer-account/eur_list";
+        model.addAttribute("pageTitle", "Euro Hesaplarım");
+        return "customer-account/index";
     }
 }
