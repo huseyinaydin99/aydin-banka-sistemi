@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/customer_layout :: layout(~{::content}, 'Para Transfer Sayfası', ~{})}">
+      th:replace="~{layout/customer_layout :: layout(~{::content}, 'Para Transfer Sayfası', ~{::extra_scripts})}">
 <body>
 <div th:fragment="content">
     <div class="x_title">
@@ -8,7 +8,6 @@
         <div class="clearfix"></div>
     </div>
     <div class="x_content">
-        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
         <form class="form-horizontal form-label-left" th:action="@{/send-money(currency=${currency})}" th:object="${processDto}" method="post">
             <p>Lütfen havale göndermek istediğiniz kişinin bilgilerini eksiksiz giriniz.</p>
             
@@ -48,6 +47,32 @@
             </div>
         </form>
     </div>
+</div>
+
+<div th:fragment="extra_scripts">
+    <!-- SweetAlert Script -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        $(document).ready(function() {
+            var successMessage = /*[[${successMessage}]]*/ null;
+            
+            if (successMessage) {
+                // Global handler zaten alert gösteriyor, biz sadece başarılı onaydan sonra yönlendirme yapalım.
+                // Global alert'in kapanmasını beklemek için override ediyoruz.
+                Swal.fire({
+                    title: 'Başarılı!',
+                    text: successMessage,
+                    icon: 'success',
+                    confirmButtonText: 'Tamam'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/my-last-process';
+                    }
+                });
+            }
+        });
+        /*]]>*/
+    </script>
 </div>
 </body>
 </html>

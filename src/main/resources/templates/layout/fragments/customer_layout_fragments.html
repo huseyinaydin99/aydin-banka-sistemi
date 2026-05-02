@@ -12,6 +12,7 @@
     <link th:href="@{/gentela-gh-pages/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css}" rel="stylesheet" />
     <link th:href="@{/gentela-gh-pages/build/css/custom.min.css}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>
         body {
             font-family: 'Poppins', sans-serif !important;
@@ -280,7 +281,8 @@
     <script th:src="@{/gentela-gh-pages/vendors/nprogress/nprogress.js}"></script>
     <script th:src="@{/gentela-gh-pages/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js}"></script>
     <script th:src="@{/gentela-gh-pages/build/js/custom.js}"></script>
-    <script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script th:inline="javascript">
         $(document).ready(function() {
             // custom.js içindeki init_sidebar() zaten click eventlerini bağlıyor.
             // Ancak, bazen sayfa yüklendiğinde CURRENT_URL eşleşmesi otomatik açılmayabiliyor.
@@ -295,17 +297,31 @@
                 $li.parents('li').addClass('active');
             });
 
-            // Eğer tıklama hala çalışmıyorsa (custom.js yüklendiği halde), 
-            // temanın beklediği classların doğru yönetildiğinden emin olalım.
-            // Ama stopPropagation yapmayalım ki custom.js de işini yapabilsin.
-            $('.nav.side-menu > li > a').on('click', function(e) {
-                var $li = $(this).parent();
-                if ($li.find('ul.child_menu').length > 0) {
-                    // Tıklanan menüyü aç/kapat mantığı custom.js içinde var.
-                    // Biz sadece görsel destek veriyoruz.
-                    console.log("Menu link clicked: " + $(this).text().trim());
-                }
-            });
+            // Global SweetAlert handler for success/error messages from redirect attributes
+            var successMessage = /*[[${successMessage}]]*/ null;
+            var errorMessage = /*[[${errorMessage}]]*/ null;
+            
+            // SendMoney sayfasında özel yönlendirme olduğu için orada handle ediliyor.
+            // Diğer sayfalar için global handler çalışacak.
+            var isSendMoneyPage = window.location.pathname.indexOf('/send-money') !== -1;
+
+            if (successMessage && !isSendMoneyPage) {
+                Swal.fire({
+                    title: 'Başarılı!',
+                    text: successMessage,
+                    icon: 'success',
+                    confirmButtonText: 'Tamam'
+                });
+            }
+            
+            if (errorMessage) {
+                Swal.fire({
+                    title: 'Hata!',
+                    text: errorMessage,
+                    icon: 'error',
+                    confirmButtonText: 'Tamam'
+                });
+            }
         });
     </script>
 </div>

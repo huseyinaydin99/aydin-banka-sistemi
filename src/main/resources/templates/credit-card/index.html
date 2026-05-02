@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/customer_layout :: layout(~{::content}, 'Kredi Kartlarım', ~{})}">
+      th:replace="~{layout/customer_layout :: layout(~{::content}, 'Kredi Kartlarım', ~{::extra_scripts})}">
 <body>
 <div th:fragment="content">
     <div class="table-responsive">
@@ -23,6 +23,10 @@
             </tbody>
         </table>
     </div>
+</div>
+
+<div th:fragment="extra_scripts">
+    <!-- Extra scripts can be added here -->
 </div>
 </body>
 </html>

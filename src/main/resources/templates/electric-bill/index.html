@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/customer_layout :: layout(~{::content}, 'Fatura Ödeme', ~{})}">
+      th:replace="~{layout/customer_layout :: layout(~{::content}, 'Fatura Ödeme', ~{::extra_scripts})}">
 <body>
 <div th:fragment="content">
     <div id="wizard" class="form_wizard wizard_horizontal">
@@ -50,9 +50,9 @@
             </div>
         </div>
     </div>
+</div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<div th:fragment="extra_scripts">
     <script th:inline="javascript">
         $(document).ready(function() {
             $('#btn-query').click(function() {
